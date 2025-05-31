@@ -1,9 +1,13 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn, Router } from '@angular/router';
 
-export const adminGuard: CanActivateChildFn = (route, state) => {
+export const adminChildrenGuard: CanActivateChildFn = (route, state) => {
   const router = inject(Router);
+  const isLoggedIn = false;
 
-  router.navigate(['/']);
-  return false;
+  if (isLoggedIn) {
+    return true;
+  }
+
+  return router.createUrlTree(['/']);
 };

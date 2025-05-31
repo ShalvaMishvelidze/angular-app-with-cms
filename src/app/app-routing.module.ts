@@ -19,8 +19,8 @@ import { AdminUsersComponent } from './features/admin-users/admin-users.componen
 import { AdminProductsComponent } from './features/admin-products/admin-products.component';
 import { AdminPostsComponent } from './features/admin-posts/admin-posts.component';
 import { AdminOrdersComponent } from './features/admin-orders/admin-orders.component';
-import { privateGuard } from './guards/private.guard';
-import { adminGuard } from './guards/admin.guard';
+import { privateChildrenGuard, privateGuard } from './guards/private.guard';
+import { adminChildrenGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -47,16 +47,32 @@ const routes: Routes = [
         path: 'cart',
         component: CartComponent,
       },
+      {
+        path: 'profile',
+        canActivate: [privateGuard],
+        component: ProfileComponent,
+      },
+      {
+        path: 'orders',
+        canActivate: [privateGuard],
+        component: OrdersComponent,
+      },
+      {
+        path: 'cart/checkout',
+        canActivate: [privateGuard],
+        component: CheckoutComponent,
+      },
     ],
   },
   {
-    path: '',
+    path: 'dashboard',
     component: PrivateComponent,
-    canActivateChild: [privateGuard],
+    canActivateChild: [privateChildrenGuard],
     children: [
       {
-        path: 'profile',
-        component: ProfileComponent,
+        path: '',
+        redirectTo: 'my-products',
+        pathMatch: 'full',
       },
       {
         path: 'my-products',
@@ -74,20 +90,12 @@ const routes: Routes = [
         path: 'new-post',
         component: NewPostComponent,
       },
-      {
-        path: 'orders',
-        component: OrdersComponent,
-      },
-      {
-        path: 'cart/checkout',
-        component: CheckoutComponent,
-      },
     ],
   },
   {
     path: 'admin',
     component: AdminComponent,
-    canActivateChild: [adminGuard],
+    canActivateChild: [adminChildrenGuard],
     children: [
       {
         path: '',
