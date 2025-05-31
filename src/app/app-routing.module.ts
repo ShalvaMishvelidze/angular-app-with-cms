@@ -7,6 +7,8 @@ import { ProfileComponent } from './features/profile/profile.component';
 import { PublicComponent } from './layouts/public/public.component';
 import { PrivateComponent } from './layouts/private/private.component';
 import { privateGuard } from './guards/private.guard';
+import { SingleProductComponent } from './features/single-product/single-product.component';
+import { CartComponent } from './features/cart/cart.component';
 
 const routes: Routes = [
   {
@@ -22,8 +24,16 @@ const routes: Routes = [
         component: ProductsComponent,
       },
       {
+        path: 'products/:id',
+        component: SingleProductComponent,
+      },
+      {
         path: 'blog',
         component: BlogComponent,
+      },
+      {
+        path: 'cart',
+        component: CartComponent,
       },
     ],
   },
