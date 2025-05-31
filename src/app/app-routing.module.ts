@@ -9,6 +9,12 @@ import { PrivateComponent } from './layouts/private/private.component';
 import { privateGuard } from './guards/private.guard';
 import { SingleProductComponent } from './features/single-product/single-product.component';
 import { CartComponent } from './features/cart/cart.component';
+import { MyProductsComponent } from './features/my-products/my-products.component';
+import { MyPostsComponent } from './features/my-posts/my-posts.component';
+import { NewProductComponent } from './features/new-product/new-product.component';
+import { NewPostComponent } from './features/new-post/new-post.component';
+import { OrdersComponent } from './features/orders/orders.component';
+import { CheckoutComponent } from './features/checkout/checkout.component';
 
 const routes: Routes = [
   {
@@ -45,6 +51,30 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileComponent,
+      },
+      {
+        path: 'my-products',
+        component: MyProductsComponent,
+      },
+      {
+        path: 'my-posts',
+        component: MyPostsComponent,
+      },
+      {
+        path: 'new-product',
+        component: NewProductComponent,
+      },
+      {
+        path: 'new-post',
+        component: NewPostComponent,
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent,
+      },
+      {
+        path: 'cart/checkout',
+        component: CheckoutComponent,
       },
     ],
   },

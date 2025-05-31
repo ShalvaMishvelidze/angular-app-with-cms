@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { PublicComponent } from './layouts/public/public.component';
 import { PrivateComponent } from './layouts/private/private.component';
 import { AdminComponent } from './layouts/admin/admin.component';
+import { MyProductsComponent } from './features/my-products/my-products.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { AdminComponent } from './layouts/admin/admin.component';
     PublicComponent,
     PrivateComponent,
     AdminComponent,
+    MyProductsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
