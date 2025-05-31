@@ -19,8 +19,11 @@ import { AdminUsersComponent } from './features/admin-users/admin-users.componen
 import { AdminProductsComponent } from './features/admin-products/admin-products.component';
 import { AdminPostsComponent } from './features/admin-posts/admin-posts.component';
 import { AdminOrdersComponent } from './features/admin-orders/admin-orders.component';
-import { privateChildrenGuard, privateGuard } from './guards/private.guard';
+import { privateChildrenGuard } from './guards/private.guard';
 import { adminChildrenGuard } from './guards/admin.guard';
+import { LoginComponent } from './features/auth/login/login.component';
+import { RegisterComponent } from './features/auth/register/register.component';
+import { smartGuard } from './guards/smart.guard';
 
 const routes: Routes = [
   {
@@ -49,17 +52,12 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        canActivate: [privateGuard],
+        canActivate: [smartGuard],
         component: ProfileComponent,
       },
       {
-        path: 'orders',
-        canActivate: [privateGuard],
-        component: OrdersComponent,
-      },
-      {
         path: 'cart/checkout',
-        canActivate: [privateGuard],
+        canActivate: [smartGuard],
         component: CheckoutComponent,
       },
     ],
@@ -90,6 +88,10 @@ const routes: Routes = [
         path: 'new-post',
         component: NewPostComponent,
       },
+      {
+        path: 'orders',
+        component: OrdersComponent,
+      },
     ],
   },
   {
@@ -119,6 +121,14 @@ const routes: Routes = [
         component: AdminOrdersComponent,
       },
     ],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
 ];
 

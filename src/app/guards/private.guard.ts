@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
-import { CanActivateChildFn, CanActivateFn, Router } from '@angular/router';
+import { CanActivateChildFn, Router } from '@angular/router';
 
-const guardPrivate = () => {
+export const privateChildrenGuard: CanActivateChildFn = (route, state) => {
   const router = inject(Router);
   const isLoggedIn = false;
 
@@ -11,7 +11,3 @@ const guardPrivate = () => {
 
   return router.createUrlTree(['/']);
 };
-
-export const privateGuard: CanActivateFn = (route, state) => guardPrivate();
-export const privateChildrenGuard: CanActivateChildFn = (route, state) =>
-  guardPrivate();
