@@ -1,1 +1,12 @@
+<header class="w-full h-[60px] bg-blue-50">
+  <nav class="flex items-center justify-center h-full">
+    <a
+      *ngFor="let link of links"
+      routerLink="{{ link.href }}"
+      class="h-full flex justify-center transition-colors duration-200 items-center text-blue-600 hover:text-blue-800 hover:bg-blue-100 px-[16px]"
+      >{{ link.title }}</a
+    >
+  </nav>
+</header>
+
 <router-outlet></router-outlet>
