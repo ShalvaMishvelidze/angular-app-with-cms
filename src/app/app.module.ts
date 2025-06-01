@@ -9,8 +9,8 @@ import { AdminComponent } from './layouts/admin/admin.component';
 import { MyProductsComponent } from './features/my-products/my-products.component';
 import { LogoComponent } from './components/logo/logo.component';
 import { HeaderComponent } from './components/header/header.component';
-import { AuthStatusBtnComponent } from './components/auth-status-btn/auth-status-btn.component';
 import { IconLinkComponent } from './components/icon-link/icon-link.component';
+import { UserButtonComponent } from './components/user-button/user-button.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +21,8 @@ import { IconLinkComponent } from './components/icon-link/icon-link.component';
     MyProductsComponent,
     LogoComponent,
     HeaderComponent,
-    AuthStatusBtnComponent,
     IconLinkComponent,
+    UserButtonComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],

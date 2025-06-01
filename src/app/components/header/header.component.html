@@ -30,7 +30,7 @@
         icon="admin"
         title="admin"
       ></app-icon-link>
-      <app-auth-status-btn *ngIf="isAuthenticated()"></app-auth-status-btn>
+      <app-user-button *ngIf="isAuthenticated()"></app-user-button>
       <app-icon-link
         *ngIf="!isAuthenticated()"
         href="/login"

@@ -1,17 +1,80 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../models/user';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private api_url = environment.api_url;
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private _user = signal<User | null>(null);
+
+  readonly user = computed(() => this._user());
+  readonly isAuthenticated = computed(() => !!this._user());
+  readonly isAdmin = computed(() => this._user()?.role === 'admin');
+  readonly isSeller = computed(() => this._user()?.role === 'seller');
+
   constructor() {}
-  isAuthenticated(): boolean {
-    return false;
+
+  getUser() {
+    this.http.get<User>(`${this.api_url}/user`).subscribe({
+      next: (user) => {
+        this._user.set(user);
+      },
+      error: () => {
+        this._user.set(null);
+        this.router.navigate(['/login']);
+      },
+    });
   }
-  isAdmin(): boolean {
-    return false;
+
+  login(credentials: { email: string; password: string }) {
+    return this.http
+      .post<User>(`${this.api_url}/user/login`, credentials)
+      .subscribe({
+        next: (user) => {
+          this._user.set(user);
+          const redirectUrl = localStorage.getItem('redirectUrl');
+          if (redirectUrl) {
+            localStorage.removeItem('redirectUrl');
+            this.router.navigate([redirectUrl]);
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        error: (err) => {
+          console.error('Login failed', err);
+        },
+      });
   }
-  isSeller(): boolean {
-    return false;
+
+  register(data: {
+    name: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }) {
+    return this.http
+      .post<User>(`${this.api_url}/user/register`, data)
+      .subscribe({
+        next: (user) => {
+          this._user.set(user);
+          const redirectUrl = localStorage.getItem('redirectUrl');
+          if (redirectUrl) {
+            localStorage.removeItem('redirectUrl');
+            this.router.navigate([redirectUrl]);
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        error: (err) => {
+          console.error('Registration failed', err);
+        },
+      });
   }
 }
