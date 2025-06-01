@@ -20,9 +20,5 @@ export class PublicComponent {
       href: '/blog',
       title: 'Blog',
     },
-    {
-      href: '/profile',
-      title: 'Profile',
-    },
   ];
 }

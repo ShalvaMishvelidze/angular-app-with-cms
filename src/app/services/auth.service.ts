@@ -8,4 +8,10 @@ export class AuthService {
   isAuthenticated(): boolean {
     return false;
   }
+  isAdmin(): boolean {
+    return false;
+  }
+  isSeller(): boolean {
+    return false;
+  }
 }
