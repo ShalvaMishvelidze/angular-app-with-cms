@@ -8,19 +8,19 @@ import { Component } from '@angular/core';
 export class AdminComponent {
   links = [
     {
-      href: '/users',
+      href: 'users',
       title: 'Users',
     },
     {
-      href: '/products',
+      href: 'products',
       title: 'Products',
     },
     {
-      href: '/posts',
+      href: 'posts',
       title: 'Posts',
     },
     {
-      href: '/orders',
+      href: 'orders',
       title: 'Orders',
     },
   ];

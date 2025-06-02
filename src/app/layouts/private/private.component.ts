@@ -9,15 +9,15 @@ import { Link } from 'src/app/models/link';
 export class PrivateComponent {
   links: Link[] = [
     {
-      href: '/my-products',
+      href: 'my-products',
       title: 'My Products',
     },
     {
-      href: '/my-posts',
+      href: 'my-posts',
       title: 'My Posts',
     },
     {
-      href: '/orders',
+      href: 'orders',
       title: 'Order History',
     },
   ];
