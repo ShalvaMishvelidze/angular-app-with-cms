@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -16,6 +16,14 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+
+  isPending = false;
+
+  constructor() {
+    effect(() => {
+      this.isPending = this.authService.isPending();
+    });
+  }
 
   passwordMatchValidator: ValidatorFn = (
     group: AbstractControl
@@ -76,8 +84,7 @@ export class RegisterComponent {
         password: formData.password ?? '',
         confirmPassword: formData.confirmPassword ?? '',
       });
-      console.log('Form submitted successfully', formData);
-      // this.registerForm.reset();
+      this.registerForm.reset();
     } else {
       console.log('Form is invalid');
     }

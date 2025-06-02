@@ -60,7 +60,7 @@
     <button
       class="w-full bg-red-400 text-white h-[40px] rounded-[5px]"
       type="submit"
-      [disabled]="registerForm.invalid"
+      [disabled]="registerForm.invalid || isPending"
     >
       Register
     </button>
