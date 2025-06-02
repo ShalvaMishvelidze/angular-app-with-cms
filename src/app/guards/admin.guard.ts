@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 export const adminChildrenGuard: CanActivateChildFn = (route, state) => {
   const router = inject(Router);
-  const isLoggedIn = false;
+  const authService = inject(AuthService);
 
-  if (isLoggedIn) {
+  if (authService.user()) {
     return true;
   }
 
