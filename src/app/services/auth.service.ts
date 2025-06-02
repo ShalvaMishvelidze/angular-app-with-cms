@@ -12,7 +12,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
   private _user = signal<User | null>(null);
-  private _pending = signal<boolean>(false);
+  private _pending = signal<boolean>(true);
 
   readonly user = computed(() => this._user());
   readonly isPending = computed(() => this._pending());
@@ -31,9 +31,13 @@ export class AuthService {
         },
         error: () => {
           this._user.set(null);
+          this._pending.set(false);
           this.router.navigate(['/login']);
         },
       });
+    } else {
+      this._user.set(null);
+      this._pending.set(false);
     }
   }
 
