@@ -1,6 +1,7 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, effect, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Link } from 'src/app/models/link';
+import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -12,15 +13,14 @@ export class HeaderComponent {
   @Input() links: Link[] = [];
   private authService = inject(AuthService);
   private router = inject(Router);
-  isAuthenticated(): boolean {
-    return this.authService.isAuthenticated();
+  user: User | null = null;
+
+  constructor() {
+    effect(() => {
+      this.user = this.authService.user();
+    });
   }
-  isAdmin(): boolean {
-    return this.authService.isAdmin();
-  }
-  isSeller(): boolean {
-    return this.authService.isSeller();
-  }
+
   isOnDashboard(): boolean {
     return this.router.url.startsWith('/dashboard');
   }

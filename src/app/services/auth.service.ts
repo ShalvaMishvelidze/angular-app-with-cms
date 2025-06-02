@@ -16,9 +16,6 @@ export class AuthService {
 
   readonly user = computed(() => this._user());
   readonly isPending = computed(() => this._pending());
-  readonly isAuthenticated = computed(() => !!this._user());
-  readonly isAdmin = computed(() => this._user()?.role === 'admin');
-  readonly isSeller = computed(() => this._user()?.role === 'seller');
 
   constructor() {
     this.getUser();
@@ -27,8 +24,8 @@ export class AuthService {
   getUser() {
     if (localStorage.getItem('token')) {
       this._pending.set(true);
-      this.http.get<User>(`${this.api_url}/user/me`).subscribe({
-        next: (user) => {
+      this.http.get<{ user: User }>(`${this.api_url}/user/me`).subscribe({
+        next: ({ user }) => {
           this._user.set(user);
           this._pending.set(false);
         },
