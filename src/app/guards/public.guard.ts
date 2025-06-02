@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
-import { CanActivateChildFn, Router } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { filter, map, take } from 'rxjs';
 
-export const privateChildrenGuard: CanActivateChildFn = (route, state) => {
+export const publicGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
 
@@ -15,9 +15,9 @@ export const privateChildrenGuard: CanActivateChildFn = (route, state) => {
     take(1),
     map((user) => {
       if (user) {
-        return true;
+        return router.createUrlTree(['/']);
       }
-      return router.createUrlTree(['/']);
+      return true;
     })
   );
 };
