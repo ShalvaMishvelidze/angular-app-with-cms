@@ -38,10 +38,15 @@ export class AuthService {
 
   login(credentials: { email: string; password: string }) {
     return this.http
-      .post<string>(`${this.api_url}/user/login`, credentials)
+      .post<{ token: string; user: User }>(
+        `${this.api_url}/user/login`,
+        credentials
+      )
       .subscribe({
-        next: (token) => {
+        next: ({ token, user }) => {
           localStorage.setItem('token', token);
+          this._user.set(user);
+
           const redirectUrl = localStorage.getItem('redirectUrl');
           if (redirectUrl) {
             localStorage.removeItem('redirectUrl');
@@ -64,10 +69,15 @@ export class AuthService {
     confirmPassword: string;
   }) {
     return this.http
-      .post<string>(`${this.api_url}/user/register`, data)
+      .post<{ token: string; user: User }>(
+        `${this.api_url}/user/register`,
+        data
+      )
       .subscribe({
-        next: (token) => {
+        next: ({ token, user }) => {
           localStorage.setItem('token', token);
+          this._user.set(user);
+
           const redirectUrl = localStorage.getItem('redirectUrl');
           if (redirectUrl) {
             localStorage.removeItem('redirectUrl');
