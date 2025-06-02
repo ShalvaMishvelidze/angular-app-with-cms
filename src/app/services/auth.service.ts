@@ -18,26 +18,30 @@ export class AuthService {
   readonly isAdmin = computed(() => this._user()?.role === 'admin');
   readonly isSeller = computed(() => this._user()?.role === 'seller');
 
-  constructor() {}
+  constructor() {
+    this.getUser();
+  }
 
   getUser() {
-    this.http.get<User>(`${this.api_url}/user`).subscribe({
-      next: (user) => {
-        this._user.set(user);
-      },
-      error: () => {
-        this._user.set(null);
-        this.router.navigate(['/login']);
-      },
-    });
+    if (localStorage.getItem('token')) {
+      this.http.get<User>(`${this.api_url}/user`).subscribe({
+        next: (user) => {
+          this._user.set(user);
+        },
+        error: () => {
+          this._user.set(null);
+          this.router.navigate(['/login']);
+        },
+      });
+    }
   }
 
   login(credentials: { email: string; password: string }) {
     return this.http
-      .post<User>(`${this.api_url}/user/login`, credentials)
+      .post<string>(`${this.api_url}/user/login`, credentials)
       .subscribe({
-        next: (user) => {
-          this._user.set(user);
+        next: (token) => {
+          localStorage.setItem('token', token);
           const redirectUrl = localStorage.getItem('redirectUrl');
           if (redirectUrl) {
             localStorage.removeItem('redirectUrl');
@@ -60,10 +64,10 @@ export class AuthService {
     confirmPassword: string;
   }) {
     return this.http
-      .post<User>(`${this.api_url}/user/register`, data)
+      .post<string>(`${this.api_url}/user/register`, data)
       .subscribe({
-        next: (user) => {
-          this._user.set(user);
+        next: (token) => {
+          localStorage.setItem('token', token);
           const redirectUrl = localStorage.getItem('redirectUrl');
           if (redirectUrl) {
             localStorage.removeItem('redirectUrl');
