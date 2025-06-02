@@ -11,6 +11,8 @@ import { LogoComponent } from './components/logo/logo.component';
 import { HeaderComponent } from './components/header/header.component';
 import { IconLinkComponent } from './components/icon-link/icon-link.component';
 import { UserButtonComponent } from './components/user-button/user-button.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { UserButtonComponent } from './components/user-button/user-button.compon
     UserButtonComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
