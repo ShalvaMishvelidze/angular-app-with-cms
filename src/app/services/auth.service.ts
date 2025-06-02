@@ -106,4 +106,10 @@ export class AuthService {
         },
       });
   }
+
+  logout() {
+    localStorage.removeItem('token');
+    this._user.set(null);
+    this.router.navigate(['/']);
+  }
 }

@@ -24,7 +24,6 @@ import { adminChildrenGuard } from './guards/admin.guard';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { smartGuard } from './guards/smart.guard';
-import { publicGuard } from './guards/public.guard';
 
 const routes: Routes = [
   {
@@ -125,12 +124,10 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    canActivate: [publicGuard],
     component: LoginComponent,
   },
   {
     path: 'register',
-    canActivate: [publicGuard],
     component: RegisterComponent,
   },
 ];

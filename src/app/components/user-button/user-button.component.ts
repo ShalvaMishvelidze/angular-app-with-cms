@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class UserButtonComponent {
   private authService = inject(AuthService);
+  readonly _dropdown = signal<boolean>(false);
   initials: string | null = null;
 
   constructor() {
@@ -18,5 +19,9 @@ export class UserButtonComponent {
           ? user.name[0] + user.lastName[0]
           : null;
     });
+  }
+
+  toggleDropdown() {
+    this._dropdown.set(!this._dropdown());
   }
 }

@@ -14,6 +14,7 @@ import { UserButtonComponent } from './components/user-button/user-button.compon
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AuthModule } from './features/auth/auth.module';
+import { DropdownComponent } from './components/user-button/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AuthModule } from './features/auth/auth.module';
     HeaderComponent,
     IconLinkComponent,
     UserButtonComponent,
+    DropdownComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, AuthModule, HttpClientModule],
   providers: [

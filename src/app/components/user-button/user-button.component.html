@@ -1,8 +1,10 @@
 <div
+  (click)="toggleDropdown()"
   *ngIf="initials"
-  class="size-[40px] bg-blue-500 flex justify-center items-center rounded-full border-[3px] border-blue-600 hover:bg-blue-600 transition-colors duration-200 cursor-pointer"
+  class="size-[40px] bg-blue-500 flex justify-center items-center rounded-full border-[3px] border-blue-600 hover:bg-blue-600 transition-colors duration-200 cursor-pointer relative z-10"
 >
   <span class="font-bold text-[18px] text-white">
     {{ initials }}
   </span>
+  <app-dropdown *ngIf="_dropdown()"></app-dropdown>
 </div>
