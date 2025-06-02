@@ -12,8 +12,10 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
   private _user = signal<User | null>(null);
+  private _pending = signal<boolean>(false);
 
   readonly user = computed(() => this._user());
+  readonly isPending = computed(() => this._pending());
   readonly isAuthenticated = computed(() => !!this._user());
   readonly isAdmin = computed(() => this._user()?.role === 'admin');
   readonly isSeller = computed(() => this._user()?.role === 'seller');
@@ -24,9 +26,11 @@ export class AuthService {
 
   getUser() {
     if (localStorage.getItem('token')) {
-      this.http.get<User>(`${this.api_url}/user`).subscribe({
+      this._pending.set(true);
+      this.http.get<User>(`${this.api_url}/user/me`).subscribe({
         next: (user) => {
           this._user.set(user);
+          this._pending.set(false);
         },
         error: () => {
           this._user.set(null);
@@ -37,6 +41,11 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }) {
+    if (this._pending()) {
+      console.warn('Login already in progress');
+      return;
+    }
+    this._pending.set(true);
     return this.http
       .post<{ token: string; user: User }>(
         `${this.api_url}/user/login`,
@@ -46,6 +55,7 @@ export class AuthService {
         next: ({ token, user }) => {
           localStorage.setItem('token', token);
           this._user.set(user);
+          this._pending.set(false);
 
           const redirectUrl = localStorage.getItem('redirectUrl');
           if (redirectUrl) {
@@ -57,6 +67,7 @@ export class AuthService {
         },
         error: (err) => {
           console.error('Login failed', err);
+          this._pending.set(false);
         },
       });
   }
@@ -68,6 +79,11 @@ export class AuthService {
     password: string;
     confirmPassword: string;
   }) {
+    if (this._pending()) {
+      console.warn('Registration already in progress');
+      return;
+    }
+
     return this.http
       .post<{ token: string; user: User }>(
         `${this.api_url}/user/register`,
@@ -77,6 +93,7 @@ export class AuthService {
         next: ({ token, user }) => {
           localStorage.setItem('token', token);
           this._user.set(user);
+          this._pending.set(false);
 
           const redirectUrl = localStorage.getItem('redirectUrl');
           if (redirectUrl) {
@@ -88,6 +105,7 @@ export class AuthService {
         },
         error: (err) => {
           console.error('Registration failed', err);
+          this._pending.set(false);
         },
       });
   }

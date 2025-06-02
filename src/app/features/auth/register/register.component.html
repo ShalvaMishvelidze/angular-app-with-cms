@@ -1,1 +1,38 @@
-<p>register works!</p>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <input formControlName="name" placeholder="Name" />
+  <div *ngIf="registerForm.get('name')?.hasError('required')">
+    Name is required
+  </div>
+
+  <input formControlName="lastName" placeholder="Last name" />
+  <div *ngIf="registerForm.get('lastName')?.hasError('required')">
+    Last name is required
+  </div>
+
+  <input formControlName="email" placeholder="Email" />
+  <div *ngIf="registerForm.get('email')?.hasError('email')">Invalid email</div>
+
+  <input type="password" formControlName="password" placeholder="Password" />
+  <div *ngIf="registerForm.get('password')?.errors">
+    <div *ngIf="registerForm.get('password')?.hasError('minlength')">
+      Min 8 characters
+    </div>
+    <div *ngIf="registerForm.get('password')?.hasError('maxlength')">
+      Max 100 characters
+    </div>
+    <div *ngIf="registerForm.get('password')?.hasError('pattern')">
+      Must include upper, lower, number, special, no spaces
+    </div>
+  </div>
+
+  <input
+    type="password"
+    formControlName="confirmPassword"
+    placeholder="Confirm Password"
+  />
+  <div *ngIf="registerForm.hasError('passwordMismatch')">
+    Passwords do not match
+  </div>
+
+  <button type="submit" [disabled]="registerForm.invalid">Register</button>
+</form>

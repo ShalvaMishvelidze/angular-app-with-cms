@@ -13,26 +13,28 @@
     </nav>
     <div class="flex gap-[10px] justify-end items-center h-full w-[200px]">
       <app-icon-link
-        *ngIf="isOnAdmin() || isOnDashboard()"
+        *ngIf="(isOnAdmin() || isOnDashboard()) && !isPending()"
         href="/"
         icon="home"
         title="home"
       ></app-icon-link>
       <app-icon-link
-        *ngIf="!isOnDashboard() && isSeller()"
+        *ngIf="!isOnDashboard() && (isSeller() || isAdmin()) && !isPending()"
         href="/dashboard"
         icon="dashboard"
         title="dashboard"
       ></app-icon-link>
       <app-icon-link
-        *ngIf="!isOnAdmin() && isAdmin()"
+        *ngIf="!isOnAdmin() && isAdmin() && !isPending()"
         href="/admin"
         icon="admin"
         title="admin"
       ></app-icon-link>
-      <app-user-button *ngIf="isAuthenticated()"></app-user-button>
+      <app-user-button
+        *ngIf="isAuthenticated() && !isPending()"
+      ></app-user-button>
       <app-icon-link
-        *ngIf="!isAuthenticated()"
+        *ngIf="!isAuthenticated() && !isPending()"
         href="/login"
         icon="login"
         title="login"

@@ -27,4 +27,7 @@ export class HeaderComponent {
   isOnAdmin(): boolean {
     return this.router.url.startsWith('/admin');
   }
+  isPending(): boolean {
+    return this.authService.isPending();
+  }
 }
