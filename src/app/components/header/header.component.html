@@ -19,7 +19,11 @@
         title="home"
       ></app-icon-link>
       <app-icon-link
-        *ngIf="!isOnDashboard() && user?.role !== 'user' && !isPending()"
+        *ngIf="
+          !isOnDashboard() &&
+          (user?.role === 'admin' || user?.role === 'seller') &&
+          !isPending()
+        "
         href="/dashboard"
         icon="dashboard"
         title="dashboard"
