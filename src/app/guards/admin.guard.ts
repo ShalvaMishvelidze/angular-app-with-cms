@@ -1,12 +1,13 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 
 export const adminChildrenGuard: CanActivateChildFn = (route, state) => {
   const router = inject(Router);
-  const authService = inject(AuthService);
+  const user = localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user')!)
+    : null;
 
-  if (authService.user()?.role === 'admin') {
+  if (localStorage.getItem('token') && user && user.role === 'admin') {
     return true;
   }
 

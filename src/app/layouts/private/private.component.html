@@ -1,4 +1,4 @@
-<h1 *ngIf="isPending">loading...</h1>
-<app-header *ngIf="!isPending" [links]="links"></app-header>
+<h1 *ngIf="isPending || !user">loading...</h1>
+<app-header *ngIf="!isPending && user" [links]="links"></app-header>
 
 <router-outlet></router-outlet>
