@@ -6,7 +6,7 @@ export const adminChildrenGuard: CanActivateChildFn = (route, state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  if (authService.user()) {
+  if (authService.user()?.role === 'admin') {
     return true;
   }
 

@@ -29,10 +29,16 @@ export class AuthService {
           this._user.set(user);
           this._pending.set(false);
         },
-        error: () => {
+        error: ({ error, code }) => {
+          if (code === 'er1001') {
+            console.error(error);
+            localStorage.removeItem('token');
+            this._user.set(null);
+            this._pending.set(false);
+            this.router.navigate(['/login']);
+          }
           this._user.set(null);
           this._pending.set(false);
-          this.router.navigate(['/login']);
         },
       });
     } else {
@@ -114,6 +120,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('token');
     this._user.set(null);
+    this._pending.set(false);
     this.router.navigate(['/']);
   }
 }
