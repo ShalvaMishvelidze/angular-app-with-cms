@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Link } from 'src/app/models/link';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-private',
@@ -7,6 +8,15 @@ import { Link } from 'src/app/models/link';
   styleUrls: ['./private.component.css'],
 })
 export class PrivateComponent {
+  private authService = inject(AuthService);
+  isPending = true;
+
+  constructor() {
+    effect(() => {
+      this.isPending = this.authService.isPending();
+    });
+  }
+
   links: Link[] = [
     {
       href: 'my-products',

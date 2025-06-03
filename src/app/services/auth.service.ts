@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
@@ -19,6 +19,9 @@ export class AuthService {
 
   constructor() {
     this.getUser();
+    effect(() => {
+      localStorage.setItem('user', JSON.stringify(this.user()));
+    });
   }
 
   getUser() {
@@ -33,6 +36,7 @@ export class AuthService {
           if (code === 'er1001') {
             console.error(error);
             localStorage.removeItem('token');
+            localStorage.removeItem('user');
             this._user.set(null);
             this._pending.set(false);
             this.router.navigate(['/login']);
