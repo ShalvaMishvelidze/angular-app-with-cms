@@ -4,4 +4,5 @@ export interface User {
   lastName: string;
   email: string;
   role: 'admin' | 'seller' | 'user';
+  status: 'verified' | 'unverified' | 'suspended';
 }

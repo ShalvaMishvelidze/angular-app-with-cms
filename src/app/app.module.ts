@@ -15,6 +15,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AuthModule } from './features/auth/auth.module';
 import { DropdownComponent } from './components/user-button/dropdown/dropdown.component';
+import { ProfileModule } from './features/profile/profile.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,13 @@ import { DropdownComponent } from './components/user-button/dropdown/dropdown.co
     UserButtonComponent,
     DropdownComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, AuthModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AuthModule,
+    HttpClientModule,
+    ProfileModule,
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],

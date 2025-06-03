@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -126,5 +127,15 @@ export class AuthService {
     this._user.set(null);
     this._pending.set(false);
     this.router.navigate(['/']);
+  }
+
+  askForVerification() {
+    this.http
+      .get<{ message: string }>(
+        `${this.api_url}/user/ask-for-email-verification`
+      )
+      .subscribe(({ message }) => {
+        console.log(message);
+      });
   }
 }
