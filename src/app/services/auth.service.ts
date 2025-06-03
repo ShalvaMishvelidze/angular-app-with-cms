@@ -64,9 +64,9 @@ export class AuthService {
           this._user.set(user);
           this._pending.set(false);
 
-          const redirectUrl = localStorage.getItem('redirectUrl');
+          const redirectUrl = localStorage.getItem('redirectUrlAfterLogin');
           if (redirectUrl) {
-            localStorage.removeItem('redirectUrl');
+            localStorage.removeItem('redirectUrlAfterLogin');
             this.router.navigate([redirectUrl]);
           } else {
             this.router.navigate(['/']);
@@ -102,9 +102,9 @@ export class AuthService {
           this._user.set(user);
           this._pending.set(false);
 
-          const redirectUrl = localStorage.getItem('redirectUrl');
+          const redirectUrl = localStorage.getItem('redirectUrlAfterLogin');
           if (redirectUrl) {
-            localStorage.removeItem('redirectUrl');
+            localStorage.removeItem('redirectUrlAfterLogin');
             this.router.navigate([redirectUrl]);
           } else {
             this.router.navigate(['/']);
