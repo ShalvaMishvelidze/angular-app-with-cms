@@ -1,0 +1,20 @@
+<div
+  class="flex flex-col h-[400px] justify-between p-[10px] bg-white rounded-lg shadow-md"
+>
+  <img
+    class="w-full object-cover h-[200px]"
+    [src]="product.thumbnail"
+    [alt]="product.name"
+  />
+  <div class="flex flex-col gap-[5px]">
+    <h2 class="h-[50px]">{{ product.name }}</h2>
+    <p>Price: {{ product.price | currency }}</p>
+    <p class="h-[80px]">
+      {{
+        product.description.length > 60
+          ? product.description.substring(0, 60) + "..."
+          : product.description
+      }}
+    </p>
+  </div>
+</div>

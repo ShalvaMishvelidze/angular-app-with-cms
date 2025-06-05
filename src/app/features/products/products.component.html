@@ -1,1 +1,23 @@
-<p>products works!</p>
+<app-section>
+  <form class="mb-[20px] flex justify-between">
+    <div class="flex gap-[10px] items-center">
+      <p>categories</p>
+      <p>sort</p>
+    </div>
+    <input
+      [formControl]="searchControl"
+      name="search"
+      class="w-[200px] h-[30px] bg-blue-200 rounded-[8px] px-[10px] text-[12px]"
+      type="search"
+      placeholder="Search"
+    />
+  </form>
+  <p *ngIf="isPending">loading...</p>
+  <section *ngIf="!isPending && products">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[16px]"
+    >
+      <app-card *ngFor="let product of products" [product]="product"></app-card>
+    </div>
+  </section>
+</app-section>
