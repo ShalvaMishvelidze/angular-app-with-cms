@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -12,7 +12,9 @@ export class ProfileComponent {
   user: User | null = null;
 
   constructor() {
-    this.user = this.authService.user();
+    effect(() => {
+      this.user = this.authService.user();
+    });
   }
 
   askForVerification() {

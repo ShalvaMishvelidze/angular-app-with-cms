@@ -8,7 +8,11 @@ export const privateChildrenGuard: CanActivateChildFn = (route, state) => {
     ? JSON.parse(localStorage.getItem('user')!)
     : null;
 
-  if (localStorage.getItem('token') && user && user.role === 'seller') {
+  if (
+    localStorage.getItem('token') &&
+    user &&
+    (user.role === 'seller' || user.role === 'admin')
+  ) {
     return true;
   }
 

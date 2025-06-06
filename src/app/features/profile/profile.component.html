@@ -1,2 +1,4 @@
 <p *ngIf="user?.status">status: {{ user?.status }}</p>
-<button *ngIf="user?.status === 'unverified'">ask for verification</button>
+<button (click)="askForVerification()" *ngIf="user?.status === 'unverified'">
+  ask for verification
+</button>
