@@ -13,7 +13,7 @@ export class ProductService {
   private _pending = signal<boolean>(true);
   private _products = signal<Product[] | null>(null);
   private _totalPages = signal<number>(0);
-  private _categories = signal<string[]>([]);
+  private _categories = signal<string[] | null>(null);
 
   readonly isPending = computed(() => this._pending());
   readonly products = computed(() => this._products());
@@ -44,6 +44,8 @@ export class ProductService {
         error: ({ error, code }) => {
           console.error('Error fetching products:', error, code);
           this._products.set(null);
+          this._totalPages.set(0);
+          this._categories.set(null);
           this._pending.set(false);
         },
       });

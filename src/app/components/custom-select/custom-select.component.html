@@ -1,0 +1,12 @@
+<div class="flex gap-[10px]">
+  <label class="capitalize">{{ name }}:</label>
+  <select
+    class="border-[2px] border-red-200 rounded-[8px] px-[10px] text-[12px] h-[30px] capitalize"
+    [name]="name"
+    (change)="handleChange($event)"
+  >
+    <option class="capitalize" *ngFor="let option of options" [value]="option">
+      {{ option }}
+    </option>
+  </select>
+</div>
