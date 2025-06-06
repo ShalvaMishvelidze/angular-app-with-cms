@@ -13,9 +13,11 @@ export class AuthService {
   private router = inject(Router);
   private _user = signal<User | null>(null);
   private _pending = signal<boolean>(true);
+  private _askedForVerification = signal<boolean>(false);
 
   readonly user = computed(() => this._user());
   readonly isPending = computed(() => this._pending());
+  readonly askedForVerification = computed(() => this._askedForVerification());
 
   constructor() {
     this.getUser();
@@ -45,6 +47,36 @@ export class AuthService {
           this._pending.set(false);
         },
       });
+    } else {
+      this._user.set(null);
+      this._pending.set(false);
+    }
+  }
+
+  updateUser(user: User) {
+    this._pending.set(true);
+    if (localStorage.getItem('token')) {
+      this.http
+        .patch<{ user: User }>(`${this.api_url}/user/me`, user)
+        .subscribe({
+          next: ({ user }) => {
+            this._user.set(user);
+            this._pending.set(false);
+          },
+          error: ({ error, code }) => {
+            if (code === 'er1001') {
+              console.error('Session expired, redirecting to login');
+              localStorage.removeItem('token');
+              localStorage.removeItem('user');
+              this._user.set(null);
+              this._pending.set(false);
+              this.router.navigate(['/login']);
+              return;
+            }
+            console.error('Failed to update user', error);
+            this._pending.set(false);
+          },
+        });
     } else {
       this._user.set(null);
       this._pending.set(false);
@@ -135,6 +167,7 @@ export class AuthService {
       )
       .subscribe(({ message }) => {
         console.log(message);
+        this._askedForVerification.set(true);
       });
   }
 }

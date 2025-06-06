@@ -40,6 +40,7 @@ import { SingleProductModule } from './features/single-product/single-product.mo
     ProfileModule,
     ProductsModule,
     SingleProductModule,
+    ProfileModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

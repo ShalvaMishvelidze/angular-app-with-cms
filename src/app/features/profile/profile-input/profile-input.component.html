@@ -1,0 +1,13 @@
+<div class="flex justify-between items-center gap-[10px]">
+  <label class="capitalize font-semibold w-full">
+    {{ name }}
+  </label>
+  <input
+    [disabled]="!isEditing"
+    [placeholder]="placeholder"
+    [value]="value"
+    [name]="name"
+    (input)="handleChange($event)"
+    [class]="isEditing ? editingStyle : normalStyle"
+  />
+</div>
