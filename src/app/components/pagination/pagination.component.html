@@ -1,0 +1,42 @@
+<div
+  *ngIf="totalPages > 1"
+  class="flex gap-[5px] justify-center items-center mt-[50px] w-full"
+>
+  <button
+    [class]="btnStyle"
+    *ngIf="currentPage !== 1 && totalPages > 2"
+    (click)="handlePageChange(1)"
+  >
+    1
+  </button>
+  <button
+    [class]="textBtnStyle"
+    [disabled]="currentPage === 1"
+    (click)="handlePageChange(currentPage - 1)"
+  >
+    prev
+  </button>
+  <ng-container *ngIf="totalPages > 1">
+    <button
+      *ngFor="let page of pages"
+      [class]="page === currentPage ? activeBtnStyle : btnStyle"
+      (click)="handlePageChange(page)"
+    >
+      {{ page }}
+    </button>
+  </ng-container>
+  <button
+    [class]="textBtnStyle"
+    [disabled]="currentPage === totalPages"
+    (click)="handlePageChange(currentPage + 1)"
+  >
+    next
+  </button>
+  <button
+    [class]="btnStyle"
+    *ngIf="currentPage !== totalPages && totalPages > 2"
+    (click)="handlePageChange(totalPages)"
+  >
+    {{ totalPages }}
+  </button>
+</div>

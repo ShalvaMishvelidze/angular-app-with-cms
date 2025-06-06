@@ -39,5 +39,11 @@
     >
       <app-card *ngFor="let product of products" [product]="product"></app-card>
     </div>
+    <app-pagination
+      [totalPages]="totalPages"
+      [currentPage]="filters().page"
+      [handlePageChange]="handlePageChange"
+      [isPending]="isPending"
+    ></app-pagination>
   </section>
 </app-section>

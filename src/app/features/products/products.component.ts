@@ -47,7 +47,7 @@ export class ProductsComponent implements OnInit {
   ];
   products: Product[] | null = null;
   categories: string[] | null = null;
-  totalPages: number = 0;
+  totalPages: number = 1;
   isPending = true;
 
   searchControl = new FormControl();
@@ -68,6 +68,13 @@ export class ProductsComponent implements OnInit {
     this._filters.update((current) => ({
       ...current,
       [name]: value,
+    }));
+  };
+
+  handlePageChange = (page: number) => {
+    this._filters.update((current) => ({
+      ...current,
+      page,
     }));
   };
 
