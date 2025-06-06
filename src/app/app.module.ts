@@ -17,6 +17,7 @@ import { AuthModule } from './features/auth/auth.module';
 import { DropdownComponent } from './components/user-button/dropdown/dropdown.component';
 import { ProfileModule } from './features/profile/profile.module';
 import { ProductsModule } from './features/products/products.module';
+import { SingleProductModule } from './features/single-product/single-product.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ProductsModule } from './features/products/products.module';
     HttpClientModule,
     ProfileModule,
     ProductsModule,
+    SingleProductModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

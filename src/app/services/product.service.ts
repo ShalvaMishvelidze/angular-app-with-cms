@@ -11,11 +11,13 @@ export class ProductService {
   private http = inject(HttpClient);
 
   private _pending = signal<boolean>(true);
+  private _product = signal<Product | null>(null);
   private _products = signal<Product[] | null>(null);
   private _totalPages = signal<number>(0);
   private _categories = signal<string[] | null>(null);
 
   readonly isPending = computed(() => this._pending());
+  readonly product = computed(() => this._product());
   readonly products = computed(() => this._products());
   readonly totalPages = computed(() => this._totalPages());
   readonly categories = computed(() => this._categories());
@@ -49,5 +51,19 @@ export class ProductService {
           this._pending.set(false);
         },
       });
+  }
+  getProductById(id: string): void {
+    this._pending.set(true);
+    this.http.get<Product>(`${this.api_url}/product/${id}`).subscribe({
+      next: (product) => {
+        this._product.set(product);
+        this._pending.set(false);
+      },
+      error: ({ error, code }) => {
+        console.error('Error fetching product by ID:', error, code);
+        this._product.set(null);
+        this._pending.set(false);
+      },
+    });
   }
 }
