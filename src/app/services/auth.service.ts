@@ -34,7 +34,7 @@ export class AuthService {
           this._user.set(user);
           this._pending.set(false);
         },
-        error: ({ error, code }) => {
+        error: ({ error: { error, code } }) => {
           if (code === 'er1001') {
             console.error(error);
             localStorage.removeItem('token');
