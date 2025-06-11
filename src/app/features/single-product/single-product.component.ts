@@ -16,7 +16,7 @@ export class SingleProductComponent {
 
   changeImage(image: string) {
     if (this.product) {
-      this.product.thumbnail = image;
+      this.product.thumbnail.url = image;
     }
   }
 

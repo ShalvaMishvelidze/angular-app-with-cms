@@ -87,4 +87,33 @@ export class ProductService {
       },
     });
   }
+  async uploadToCloudinary(file: File) {
+    try {
+      const response = await fetch(`${this.api_url}/cloudinary/sign`, {
+        method: 'POST',
+      });
+
+      const data = await response.json();
+      const { signature, timestamp, folder, apiKey, cloudName } = data;
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', apiKey);
+      formData.append('timestamp', timestamp.toString());
+      formData.append('signature', signature);
+      formData.append('folder', folder);
+
+      const cloudinaryResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      const cloudinaryData = await cloudinaryResponse.json();
+      return { url: cloudinaryData.secure_url, id: cloudinaryData.public_id };
+    } catch (error) {
+      console.error('Error uploading to Cloudinary:', error);
+      throw error;
+    }
+  }
 }

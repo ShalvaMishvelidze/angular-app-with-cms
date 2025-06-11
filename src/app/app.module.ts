@@ -19,6 +19,7 @@ import { ProductsModule } from './features/products/products.module';
 import { SingleProductModule } from './features/single-product/single-product.module';
 import { SharedModule } from './components/shared.module';
 import { MyProductsModule } from './features/my-products/my-products.module';
+import { NewProductModule } from './features/new-product/new-product.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MyProductsModule } from './features/my-products/my-products.module';
     ProfileModule,
     SharedModule,
     MyProductsModule,
+    NewProductModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
