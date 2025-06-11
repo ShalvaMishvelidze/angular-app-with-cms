@@ -116,4 +116,14 @@ export class ProductService {
       throw error;
     }
   }
+  async deleteFromCloudinary(publicId: string) {
+    const response = await fetch(`${this.api_url}/cloudinary/delete`, {
+      method: 'DELETE',
+      body: JSON.stringify({ publicId }),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error deleting from Cloudinary: ${errorData.message}`);
+    }
+  }
 }

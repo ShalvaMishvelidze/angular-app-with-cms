@@ -76,4 +76,14 @@ export class ImageUploadComponent {
       });
     }
   }
+  deleteImage(publicId: string) {
+    this.productService.deleteFromCloudinary(publicId).then(() => {
+      this._data.update((d) => ({
+        ...d,
+        thumbnail:
+          d.thumbnail.id === publicId ? { url: null, id: null } : d.thumbnail,
+        images: d.images.filter((image) => image.id !== publicId),
+      }));
+    });
+  }
 }

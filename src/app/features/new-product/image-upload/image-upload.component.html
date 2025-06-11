@@ -1,12 +1,23 @@
 <div class="flex flex-col gap-[12px] w-full">
   <p class="text-[28px] font-semibold">Thumbnail:</p>
 
-  <img
-    class="w-full h-[200px] object-cover rounded-[5px] shadow-sm"
+  <div
     *ngIf="data().thumbnail.url"
-    [src]="data().thumbnail.url"
-    width="200"
-  />
+    class="relative w-full h-[200px] overflow-hidden rounded-[5px] shadow-sm"
+  >
+    <img
+      class="w-full h-[200px] object-cover"
+      [src]="data().thumbnail.url"
+      width="200"
+    />
+    <button
+      (click)="deleteImage(data().thumbnail.id!)"
+      class="size-[20px] leading-[20px] rounded-full bg-blue-700 text-white font-bold absolute right-0 top-0"
+      type="button"
+    >
+      x
+    </button>
+  </div>
 
   <label
     *ngIf="!data().thumbnail.url"
@@ -26,12 +37,19 @@
   <p class="text-[22px] font-semibold" *ngIf="data().thumbnail.url">Images:</p>
 
   <div class="flex justify-between items-center">
-    <img
-      class="w-1/6 h-[50px] object-cover rounded-[5px] shadow-sm"
+    <div
       *ngFor="let i of data().images"
-      [src]="i.url"
-      width="200"
-    />
+      class="relative w-1/6 h-[50px] rounded-[5px] overflow-hidden shadow-sm"
+    >
+      <img class="w-full h-[50px] object-cover" [src]="i.url" width="200" />
+      <button
+        (click)="deleteImage(i.id!)"
+        class="size-[20px] rounded-full bg-blue-700 text-white font-bold absolute right-0 top-0"
+        type="button"
+      >
+        x
+      </button>
+    </div>
 
     <label
       *ngIf="data().thumbnail.url && data().selectedImagesNumber < 5"
