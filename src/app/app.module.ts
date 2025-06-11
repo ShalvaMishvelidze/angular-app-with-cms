@@ -18,6 +18,8 @@ import { DropdownComponent } from './components/user-button/dropdown/dropdown.co
 import { ProfileModule } from './features/profile/profile.module';
 import { ProductsModule } from './features/products/products.module';
 import { SingleProductModule } from './features/single-product/single-product.module';
+import { SharedModule } from './components/shared.module';
+import { MyProductsModule } from './features/my-products/my-products.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,6 @@ import { SingleProductModule } from './features/single-product/single-product.mo
     PublicComponent,
     PrivateComponent,
     AdminComponent,
-    MyProductsComponent,
     LogoComponent,
     HeaderComponent,
     IconLinkComponent,
@@ -41,6 +42,8 @@ import { SingleProductModule } from './features/single-product/single-product.mo
     ProductsModule,
     SingleProductModule,
     ProfileModule,
+    SharedModule,
+    MyProductsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
