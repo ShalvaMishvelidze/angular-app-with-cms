@@ -54,13 +54,15 @@ export class ProductService {
         },
       });
   }
-  getMyProducts(): void {
+  getMyProducts(search: string = ''): void {
     this._pending.set(true);
     this.http
-      .get<{ products: Product[] }>(`${this.api_url}/product/me`)
+      .get<{ products: Product[] }>(
+        `${this.api_url}/product/me?search=${search}`
+      )
       .subscribe({
-        next: ({ products }) => {
-          this._my_products.set(products);
+        next: ({ products: myProducts }) => {
+          this._my_products.set(myProducts);
           this._pending.set(false);
         },
         error: ({ error, code }) => {

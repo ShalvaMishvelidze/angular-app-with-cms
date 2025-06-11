@@ -1,0 +1,16 @@
+<a
+  [routerLink]="['/dashboard/my-products', product.id]"
+  class="flex flex-col h-[400px] justify-between p-[10px] bg-white rounded-lg shadow-md"
+>
+  <img
+    class="w-full object-cover h-[200px]"
+    [src]="product.thumbnail"
+    [alt]="product.name"
+  />
+  <div class="flex flex-col gap-[5px]">
+    <h2 class="h-[50px]">{{ product.name }}</h2>
+    <p>Price: {{ product.price | currency }}</p>
+    <p>Created At: {{ product.createdAt | date : "dd/MM/yyyy" }}</p>
+    <p>Updated At: {{ product.updatedAt | date : "dd/MM/yyyy" }}</p>
+  </div>
+</a>

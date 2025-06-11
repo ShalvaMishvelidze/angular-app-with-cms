@@ -9,4 +9,7 @@ export interface Product {
   discount: number;
   stock: number;
   rating: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
 }

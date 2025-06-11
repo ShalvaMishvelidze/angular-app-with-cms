@@ -1,33 +1,20 @@
 <app-section>
-  <ng-container *ngIf="products && !isPending">
+  <ng-container>
     <form class="mb-[20px] flex justify-between">
-      <div class="flex gap-[10px] items-center">
-        <div class="flex gap-[10px]">
-          <label class="capitalize">Sort:</label>
-          <select
-            class="border-[2px] border-red-200 rounded-[8px] px-[10px] text-[12px] h-[30px] capitalize"
-            name="sort"
-            (change)="handleChange($event)"
-          >
-            <option class="capitalize" value="">no sort</option>
-            <option
-              class="capitalize"
-              *ngFor="let option of sortOptions"
-              [value]="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-        </div>
-      </div>
       <input
         [formControl]="searchControl"
         name="search"
-        class="w-[200px] h-[30px] bg-blue-200 rounded-[8px] px-[10px] text-[12px]"
+        class="w-full h-[30px] bg-blue-200 rounded-[8px] px-[10px] text-[12px]"
         type="search"
-        placeholder="Search"
+        placeholder="Search your products"
       />
     </form>
-    <p *ngFor="let p of products">{{ p.name }} - {{ p.price | currency }}</p>
+    <p *ngIf="isPending">loading...</p>
+    <section
+      *ngIf="products && !isPending"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[20px]"
+    >
+      <app-card *ngFor="let p of products" [product]="p"></app-card>
+    </section>
   </ng-container>
 </app-section>

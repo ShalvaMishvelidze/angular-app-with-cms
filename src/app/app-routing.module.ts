@@ -25,6 +25,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { smartGuard } from './guards/smart.guard';
 import { publicGuard } from './guards/public.guard';
+import { MySingleProductComponent } from './features/my-single-product/my-single-product.component';
 
 const routes: Routes = [
   {
@@ -76,6 +77,10 @@ const routes: Routes = [
       {
         path: 'my-products',
         component: MyProductsComponent,
+      },
+      {
+        path: 'my-products/:id',
+        component: MySingleProductComponent,
       },
       {
         path: 'my-posts',

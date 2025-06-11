@@ -14,17 +14,8 @@ export class MyProductsComponent {
 
   products: Product[] | null = null;
   isPending = true;
-  categories = null;
-  sortOptions = [
-    {
-      label: 'no sort',
-      value: '',
-    },
-  ];
 
   searchControl = new FormControl();
-
-  handleChange(e: Event) {}
 
   constructor() {
     this.productService.getMyProducts();
@@ -38,12 +29,7 @@ export class MyProductsComponent {
     this.searchControl.valueChanges
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((query) => {
-        console.log(query);
-
-        // this._filters.update((current) => ({
-        //   ...current,
-        //   search: query,
-        // }));
+        this.productService.getMyProducts(query);
       });
   }
 }
