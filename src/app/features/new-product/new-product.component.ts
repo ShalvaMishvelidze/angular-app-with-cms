@@ -99,6 +99,32 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.productService.saveAsDraft(draft as Product);
   }
 
+  clearValues() {
+    const oldImages = this._imageValues().images;
+    const deletions = oldImages.map((image) =>
+      this.productService.deleteFromCloudinary(image.id)
+    );
+
+    Promise.all([...deletions, this.productService.deleteDraft()])
+      .then(() => {
+        this._imageValues.set({
+          thumbnail: { url: null, id: null },
+          images: [],
+        });
+        this.form.reset({
+          name: '',
+          description: '',
+          discount: 0,
+          price: 0,
+          stock: 0,
+          category: '',
+        });
+      })
+      .catch((error) => {
+        console.error('Error deleting old images:', error);
+      });
+  }
+
   onSubmit(event: Event) {
     event.preventDefault();
   }

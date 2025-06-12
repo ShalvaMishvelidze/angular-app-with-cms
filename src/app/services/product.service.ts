@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Product } from '../models/product';
-import { finalize, Observable, tap } from 'rxjs';
+import { finalize, firstValueFrom, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,6 @@ export class ProductService {
 
   private _pending = signal<boolean>(true);
   private _product = signal<Product | null>(null);
-  private _draft = signal<Product | null>(null);
   private _products = signal<Product[] | null>(null);
   private _my_products = signal<Product[] | null>(null);
   private _totalPages = signal<number>(0);
@@ -21,7 +20,6 @@ export class ProductService {
 
   readonly isPending = computed(() => this._pending());
   readonly product = computed(() => this._product());
-  readonly draft = computed(() => this._draft());
   readonly products = computed(() => this._products());
   readonly myProducts = computed(() => this._my_products());
   readonly totalPages = computed(() => this._totalPages());
@@ -147,5 +145,17 @@ export class ProductService {
     return this.http
       .get<{ draft: Product }>(`${this.api_url}/product/draft`)
       .pipe(finalize(() => this._pending.set(false)));
+  }
+  async deleteDraft(): Promise<void> {
+    this._pending.set(true);
+    try {
+      await firstValueFrom(
+        this.http.delete<void>(`${this.api_url}/product/draft`)
+      );
+    } catch (err: any) {
+      console.error('Error deleting draft:', err?.error, err?.code);
+    } finally {
+      this._pending.set(false);
+    }
   }
 }
