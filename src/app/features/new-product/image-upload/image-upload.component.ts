@@ -1,11 +1,12 @@
 import {
   Component,
   computed,
-  effect,
   EventEmitter,
   inject,
+  Input,
   Output,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -20,38 +21,31 @@ interface Image {
   styleUrls: ['./image-upload.component.css'],
 })
 export class ImageUploadComponent {
-  private productService = inject(ProductService);
-  private _data = signal<{ thumbnail: Image; images: Image[] }>({
-    thumbnail: { url: null, id: null },
-    images: [],
-  });
-  private _pending = signal<boolean>(false);
-
-  readonly data = computed(() => ({
-    thumbnail: this._data().thumbnail,
-    images: this._data().images,
-    selectedImagesNumber: this._data().images.length,
-    pending: this._pending(),
-  }));
-
-  @Output() thumbnailChange = new EventEmitter<{
+  @Input() _imageValues!: WritableSignal<{ thumbnail: Image; images: Image[] }>;
+  @Output() imageChange = new EventEmitter<{
     thumbnail: Image;
     images: Image[];
   }>();
 
-  constructor() {
-    effect(() => {
-      const { thumbnail, images } = this.data();
-      this.thumbnailChange.emit({ thumbnail, images });
-    });
-  }
+  private productService = inject(ProductService);
+  private _pending = signal<boolean>(false);
+
+  readonly data = computed(() => {
+    const value = this._imageValues?.();
+    return {
+      thumbnail: value?.thumbnail ?? { url: null, id: null },
+      images: value?.images ?? [],
+      selectedImagesNumber: value?.images?.length ?? 0,
+      pending: this._pending(),
+    };
+  });
 
   onThumbnailSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this._pending.set(true);
       this.productService.uploadToCloudinary(file).then(({ url, id }) => {
-        this._data.update((d) => ({
+        this._imageValues.update((d) => ({
           ...d,
           thumbnail: { url, id },
           images: [{ url, id }, ...d.images],
@@ -68,7 +62,7 @@ export class ImageUploadComponent {
     if (file) {
       this._pending.set(true);
       this.productService.uploadToCloudinary(file).then(({ url, id }) => {
-        this._data.update((d) => ({
+        this._imageValues.update((d) => ({
           ...d,
           images: [...d.images, { url, id }],
         }));
@@ -78,7 +72,7 @@ export class ImageUploadComponent {
   }
   deleteImage(publicId: string) {
     this.productService.deleteFromCloudinary(publicId).then(() => {
-      this._data.update((d) => ({
+      this._imageValues.update((d) => ({
         ...d,
         thumbnail:
           d.thumbnail.id === publicId ? { url: null, id: null } : d.thumbnail,

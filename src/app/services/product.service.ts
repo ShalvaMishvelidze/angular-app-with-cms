@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Product } from '../models/product';
+import { finalize, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class ProductService {
 
   private _pending = signal<boolean>(true);
   private _product = signal<Product | null>(null);
+  private _draft = signal<Product | null>(null);
   private _products = signal<Product[] | null>(null);
   private _my_products = signal<Product[] | null>(null);
   private _totalPages = signal<number>(0);
@@ -19,6 +21,7 @@ export class ProductService {
 
   readonly isPending = computed(() => this._pending());
   readonly product = computed(() => this._product());
+  readonly draft = computed(() => this._draft());
   readonly products = computed(() => this._products());
   readonly myProducts = computed(() => this._my_products());
   readonly totalPages = computed(() => this._totalPages());
@@ -125,5 +128,24 @@ export class ProductService {
       const errorData = await response.json();
       throw new Error(`Error deleting from Cloudinary: ${errorData.message}`);
     }
+  }
+  saveAsDraft(product: any): void {
+    this._pending.set(true);
+    this.http.put<void>(`${this.api_url}/product/draft`, product).subscribe({
+      next: () => {
+        this._pending.set(false);
+      },
+      error: ({ error, code }) => {
+        console.error('Error saving product as draft:', error, code);
+        this._pending.set(false);
+      },
+    });
+  }
+  getDraft(): Observable<{ draft: Product }> {
+    this._pending.set(true);
+
+    return this.http
+      .get<{ draft: Product }>(`${this.api_url}/product/draft`)
+      .pipe(finalize(() => this._pending.set(false)));
   }
 }

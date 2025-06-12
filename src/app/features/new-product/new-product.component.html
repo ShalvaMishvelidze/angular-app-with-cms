@@ -1,6 +1,59 @@
 <app-section>
   <div class="mx-auto max-w-[600px] w-full">
     <p>new product</p>
-    <app-image-upload></app-image-upload>
+    <app-image-upload [_imageValues]="_imageValues"></app-image-upload>
+    <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+      <div>
+        <label for="name">Name</label>
+        <input
+          id="name"
+          formControlName="name"
+          type="text"
+          placeholder="Product name"
+        />
+      </div>
+
+      <div>
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          placeholder="Description"
+        ></textarea>
+      </div>
+
+      <div>
+        <label for="discount">Discount (%)</label>
+        <input
+          id="discount"
+          formControlName="discount"
+          type="number"
+          min="0"
+          max="100"
+        />
+      </div>
+
+      <div>
+        <label for="price">Price ($)</label>
+        <input id="price" formControlName="price" type="number" min="0" />
+      </div>
+
+      <div>
+        <label for="stock">Stock</label>
+        <input id="stock" formControlName="stock" type="number" min="0" />
+      </div>
+
+      <div>
+        <label for="category">Category</label>
+        <input
+          id="category"
+          formControlName="category"
+          type="text"
+          placeholder="Category"
+        />
+      </div>
+
+      <button type="submit">Save</button>
+    </form>
   </div>
 </app-section>
