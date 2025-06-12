@@ -68,6 +68,7 @@ export class ProductsComponent implements OnInit {
     this._filters.update((current) => ({
       ...current,
       [name]: value,
+      page: 1,
     }));
   };
 
@@ -102,6 +103,7 @@ export class ProductsComponent implements OnInit {
         this._filters.update((current) => ({
           ...current,
           search: query,
+          page: 1,
         }));
       });
   }
