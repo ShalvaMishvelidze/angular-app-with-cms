@@ -30,6 +30,13 @@
   </label>
 
   <p
+    class="text-red-500 text-sm mt-1"
+    *ngIf="data().touched && data().thumbnail.url === null"
+  >
+    Thumbnail is required.
+  </p>
+
+  <p
     class="text-[22px] font-semibold"
     *ngIf="data().thumbnail.url || data().selectedImagesNumber > 0"
   >

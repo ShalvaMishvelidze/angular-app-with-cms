@@ -3,6 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Product } from '../models/product';
 import { finalize, firstValueFrom, Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { finalize, firstValueFrom, Observable, tap } from 'rxjs';
 export class ProductService {
   private api_url = environment.api_url;
   private http = inject(HttpClient);
+  private router = inject(Router);
 
   private _pending = signal<boolean>(true);
   private _product = signal<Product | null>(null);
@@ -157,5 +159,22 @@ export class ProductService {
     } finally {
       this._pending.set(false);
     }
+  }
+  createNewProduct(product: Product): void {
+    this._pending.set(true);
+    this.http
+      .post<{ product: Product }>(`${this.api_url}/product/me`, product)
+      .subscribe({
+        next: ({ product: newProduct }) => {
+          this._product.set(newProduct);
+          this._pending.set(false);
+          this.router.navigate(['/dashboard/my-products', newProduct.id]);
+        },
+        error: ({ error, code }) => {
+          console.error('Error creating new product:', error, code);
+          this._product.set(null);
+          this._pending.set(false);
+        },
+      });
   }
 }

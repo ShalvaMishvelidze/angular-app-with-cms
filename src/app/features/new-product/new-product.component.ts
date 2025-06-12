@@ -22,6 +22,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private productService = inject(ProductService);
 
+  protected _imageTouched = signal(false);
   protected _imageValues = signal<{
     thumbnail: { url: string | null; id: string | null };
     images: { url: string; id: string }[];
@@ -33,7 +34,10 @@ export class NewProductComponent implements OnInit, OnDestroy {
   form = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(50)]],
     description: [''],
-    discount: [0, [Validators.min(0), Validators.max(100)]],
+    discount: [
+      0,
+      [Validators.required, Validators.min(0), Validators.max(100)],
+    ],
     price: [0, [Validators.required, Validators.min(0)]],
     stock: [0, [Validators.required, Validators.min(0)]],
     category: ['', [Validators.required, Validators.maxLength(50)]],
@@ -127,6 +131,18 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   onSubmit(event: Event) {
     event.preventDefault();
+
+    if (this.form.invalid || this._imageValues().thumbnail.url === null) {
+      this.form.markAllAsTouched();
+      this._imageTouched.set(true);
+      return;
+    }
+
+    this.productService.createNewProduct({
+      thumbnail: this._imageValues().thumbnail,
+      images: this._imageValues().images,
+      ...this.form.getRawValue(),
+    } as Product);
   }
 
   ngOnDestroy() {

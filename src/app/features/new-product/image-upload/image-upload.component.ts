@@ -22,6 +22,7 @@ interface Image {
 })
 export class ImageUploadComponent {
   @Input() _imageValues!: WritableSignal<{ thumbnail: Image; images: Image[] }>;
+  @Input() _imageTouched!: WritableSignal<boolean>;
   @Output() imageChange = new EventEmitter<{
     thumbnail: Image;
     images: Image[];
@@ -32,11 +33,14 @@ export class ImageUploadComponent {
 
   readonly data = computed(() => {
     const value = this._imageValues?.();
+    const touched = this._imageTouched?.();
+
     return {
       thumbnail: value?.thumbnail ?? { url: null, id: null },
       images: value?.images ?? [],
       selectedImagesNumber: value?.images?.length ?? 0,
       pending: this._pending(),
+      touched,
     };
   });
 
@@ -50,6 +54,7 @@ export class ImageUploadComponent {
           thumbnail: { url, id },
           images: [{ url, id }, ...d.images],
         }));
+        this._imageTouched.set(true);
         this._pending.set(false);
       });
     }
@@ -66,6 +71,7 @@ export class ImageUploadComponent {
           ...d,
           images: [...d.images, { url, id }],
         }));
+        this._imageTouched.set(true);
         this._pending.set(false);
       });
     }

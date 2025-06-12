@@ -1,66 +1,159 @@
 <app-section>
-  <div class="mx-auto max-w-[600px] w-full">
-    <p>new product</p>
-    <app-image-upload [_imageValues]="_imageValues"></app-image-upload>
-    <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+  <div class="mx-auto max-w-[600px] w-full space-y-4">
+    <p class="text-xl font-semibold mb-2">New Product</p>
+
+    <app-image-upload
+      [_imageValues]="_imageValues"
+      [_imageTouched]="_imageTouched"
+    ></app-image-upload>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="space-y-4">
+      <!-- Name -->
       <div>
-        <label for="name">Name</label>
+        <label for="name" class="block font-medium">Name*</label>
         <input
           id="name"
           formControlName="name"
           type="text"
           placeholder="Product name"
+          class="w-full border rounded px-3 py-2"
         />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="form.get('name')?.touched && form.get('name')?.invalid"
+        >
+          <ng-container *ngIf="form.get('name')?.errors?.['required']"
+            >Name is required.</ng-container
+          >
+          <ng-container *ngIf="form.get('name')?.errors?.['maxlength']"
+            >Name is too long.</ng-container
+          >
+        </p>
       </div>
 
+      <!-- Description -->
       <div>
-        <label for="description">Description</label>
+        <label for="description" class="block font-medium">Description</label>
         <textarea
           id="description"
           formControlName="description"
-          placeholder="Description"
+          placeholder="Description(optional)"
+          class="w-full border rounded px-3 py-2"
         ></textarea>
       </div>
 
+      <!-- Discount -->
       <div>
-        <label for="discount">Discount (%)</label>
+        <label for="discount" class="block font-medium">Discount* (%)</label>
         <input
           id="discount"
           formControlName="discount"
           type="number"
           min="0"
           max="100"
+          class="w-full border rounded px-3 py-2"
         />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="form.get('discount')?.touched && form.get('discount')?.invalid"
+        >
+          <ng-container *ngIf="form.get('discount')?.errors?.['required']"
+            >Discount is required(it must be at least 0).</ng-container
+          >
+          <ng-container *ngIf="form.get('discount')?.errors?.['min']"
+            >Discount must be at least 0.</ng-container
+          >
+          <ng-container *ngIf="form.get('discount')?.errors?.['max']"
+            >Discount cannot exceed 100.</ng-container
+          >
+        </p>
       </div>
 
+      <!-- Price -->
       <div>
-        <label for="price">Price ($)</label>
-        <input id="price" formControlName="price" type="number" min="0" />
+        <label for="price" class="block font-medium">Price* ($)</label>
+        <input
+          id="price"
+          formControlName="price"
+          type="number"
+          min="0"
+          class="w-full border rounded px-3 py-2"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="form.get('price')?.touched && form.get('price')?.invalid"
+        >
+          <ng-container *ngIf="form.get('price')?.errors?.['required']"
+            >Price is required.</ng-container
+          >
+          <ng-container *ngIf="form.get('price')?.errors?.['min']"
+            >Price must be at least 0.</ng-container
+          >
+        </p>
       </div>
 
+      <!-- Stock -->
       <div>
-        <label for="stock">Stock</label>
-        <input id="stock" formControlName="stock" type="number" min="0" />
+        <label for="stock" class="block font-medium">Stock*</label>
+        <input
+          id="stock"
+          formControlName="stock"
+          type="number"
+          min="0"
+          class="w-full border rounded px-3 py-2"
+        />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="form.get('stock')?.touched && form.get('stock')?.invalid"
+        >
+          <ng-container *ngIf="form.get('stock')?.errors?.['required']"
+            >Stock is required.</ng-container
+          >
+          <ng-container *ngIf="form.get('stock')?.errors?.['min']"
+            >Stock must be at least 0.</ng-container
+          >
+        </p>
       </div>
 
+      <!-- Category -->
       <div>
-        <label for="category">Category</label>
+        <label for="category" class="block font-medium">Category*</label>
         <input
           id="category"
           formControlName="category"
           type="text"
           placeholder="Category"
+          class="w-full border rounded px-3 py-2"
         />
+        <p
+          class="text-red-500 text-sm mt-1"
+          *ngIf="form.get('category')?.touched && form.get('category')?.invalid"
+        >
+          <ng-container *ngIf="form.get('category')?.errors?.['required']"
+            >Category is required.</ng-container
+          >
+          <ng-container *ngIf="form.get('category')?.errors?.['maxlength']"
+            >Category is too long.</ng-container
+          >
+        </p>
       </div>
 
-      <button type="submit">Save</button>
+      <!-- Buttons -->
+      <div class="flex gap-4 pt-2">
+        <button
+          type="button"
+          (click)="clearValues()"
+          class="bg-red-400 text-white px-4 h-9 rounded font-semibold hover:bg-red-500"
+        >
+          Clear
+        </button>
+        <button
+          type="submit"
+          class="bg-green-400 text-white px-4 h-9 rounded font-semibold hover:bg-green-500"
+        >
+          Create
+        </button>
+      </div>
     </form>
-    <button
-      class="bg-red-400 text-white px-[10px] h-[30px] rounded-[5px] font-semibold"
-      type="button"
-      (click)="clearValues()"
-    >
-      clear
-    </button>
   </div>
 </app-section>
