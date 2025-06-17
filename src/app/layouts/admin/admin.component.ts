@@ -4,9 +4,10 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css'],
+    selector: 'app-admin',
+    templateUrl: './admin.component.html',
+    styleUrls: ['./admin.component.css'],
+    standalone: false
 })
 export class AdminComponent {
   private authService = inject(AuthService);

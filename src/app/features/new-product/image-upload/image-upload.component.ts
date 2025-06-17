@@ -16,9 +16,10 @@ interface Image {
 }
 
 @Component({
-  selector: 'app-image-upload',
-  templateUrl: './image-upload.component.html',
-  styleUrls: ['./image-upload.component.css'],
+    selector: 'app-image-upload',
+    templateUrl: './image-upload.component.html',
+    styleUrls: ['./image-upload.component.css'],
+    standalone: false
 })
 export class ImageUploadComponent {
   @Input() _imageValues!: WritableSignal<{ thumbnail: Image; images: Image[] }>;

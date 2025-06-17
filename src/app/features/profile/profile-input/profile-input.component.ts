@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-profile-input',
-  templateUrl: './profile-input.component.html',
-  styleUrls: ['./profile-input.component.css'],
+    selector: 'app-profile-input',
+    templateUrl: './profile-input.component.html',
+    styleUrls: ['./profile-input.component.css'],
+    standalone: false
 })
 export class ProfileInputComponent {
   @Input() name: string = '';

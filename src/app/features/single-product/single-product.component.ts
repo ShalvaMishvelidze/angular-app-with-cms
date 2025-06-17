@@ -4,9 +4,10 @@ import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
-  selector: 'app-single-product',
-  templateUrl: './single-product.component.html',
-  styleUrls: ['./single-product.component.css'],
+    selector: 'app-single-product',
+    templateUrl: './single-product.component.html',
+    styleUrls: ['./single-product.component.css'],
+    standalone: false
 })
 export class SingleProductComponent {
   private productService = inject(ProductService);

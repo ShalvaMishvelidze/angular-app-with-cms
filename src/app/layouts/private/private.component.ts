@@ -5,9 +5,10 @@ import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-private',
-  templateUrl: './private.component.html',
-  styleUrls: ['./private.component.css'],
+    selector: 'app-private',
+    templateUrl: './private.component.html',
+    styleUrls: ['./private.component.css'],
+    standalone: false
 })
 export class PrivateComponent {
   private authService = inject(AuthService);

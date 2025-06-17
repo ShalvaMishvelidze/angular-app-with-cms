@@ -5,9 +5,10 @@ import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
-  selector: 'app-my-products',
-  templateUrl: './my-products.component.html',
-  styleUrls: ['./my-products.component.css'],
+    selector: 'app-my-products',
+    templateUrl: './my-products.component.html',
+    styleUrls: ['./my-products.component.css'],
+    standalone: false
 })
 export class MyProductsComponent {
   private productService = inject(ProductService);
