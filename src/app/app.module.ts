@@ -10,7 +10,7 @@ import { LogoComponent } from './components/logo/logo.component';
 import { HeaderComponent } from './components/header/header.component';
 import { IconLinkComponent } from './components/icon-link/icon-link.component';
 import { UserButtonComponent } from './components/user-button/user-button.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AuthModule } from './features/auth/auth.module';
 import { DropdownComponent } from './components/user-button/dropdown/dropdown.component';
@@ -21,34 +21,28 @@ import { SharedModule } from './components/shared.module';
 import { MyProductsModule } from './features/my-products/my-products.module';
 import { NewProductModule } from './features/new-product/new-product.module';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    PublicComponent,
-    PrivateComponent,
-    AdminComponent,
-    LogoComponent,
-    HeaderComponent,
-    IconLinkComponent,
-    UserButtonComponent,
-    DropdownComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AuthModule,
-    HttpClientModule,
-    ProfileModule,
-    ProductsModule,
-    SingleProductModule,
-    ProfileModule,
-    SharedModule,
-    MyProductsModule,
-    NewProductModule,
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        PublicComponent,
+        PrivateComponent,
+        AdminComponent,
+        LogoComponent,
+        HeaderComponent,
+        IconLinkComponent,
+        UserButtonComponent,
+        DropdownComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        AuthModule,
+        ProfileModule,
+        ProductsModule,
+        SingleProductModule,
+        ProfileModule,
+        SharedModule,
+        MyProductsModule,
+        NewProductModule], providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}
