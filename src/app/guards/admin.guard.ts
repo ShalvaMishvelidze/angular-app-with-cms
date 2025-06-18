@@ -1,13 +1,16 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn, Router } from '@angular/router';
+import { CookieService } from '../services/cookie.service';
 
 export const adminChildrenGuard: CanActivateChildFn = (route, state) => {
   const router = inject(Router);
-  const user = localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user')!)
+  const cookieService = inject(CookieService);
+
+  const user = cookieService.getCookie('user')
+    ? JSON.parse(cookieService.getCookie('user')!)
     : null;
 
-  if (localStorage.getItem('token') && user && user.role === 'admin') {
+  if (cookieService.getCookie('token') && user && user.role === 'admin') {
     return true;
   }
 

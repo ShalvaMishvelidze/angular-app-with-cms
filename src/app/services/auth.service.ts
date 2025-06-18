@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { CookieService } from './cookie.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class AuthService {
   private api_url = environment.api_url;
   private http = inject(HttpClient);
   private router = inject(Router);
+  private cookieService = inject(CookieService);
   private _user = signal<User | null>(null);
   private _pending = signal<boolean>(true);
   private _askedForVerification = signal<boolean>(false);
@@ -22,12 +24,19 @@ export class AuthService {
   constructor() {
     this.getUser();
     effect(() => {
-      localStorage.setItem('user', JSON.stringify(this.user()));
+      this.cookieService.setCookie(
+        'user',
+        JSON.stringify(this.user()),
+        0,
+        0,
+        15,
+        0
+      );
     });
   }
 
   getUser() {
-    if (localStorage.getItem('token')) {
+    if (this.cookieService.getCookie('token')) {
       this._pending.set(true);
       this.http.get<{ user: User }>(`${this.api_url}/user/me`).subscribe({
         next: ({ user }) => {
@@ -37,8 +46,8 @@ export class AuthService {
         error: ({ error: { error, code } }) => {
           if (code === 'er1001') {
             console.error(error);
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
+            this.cookieService.deleteCookie('token');
+            this.cookieService.deleteCookie('user');
             this._user.set(null);
             this._pending.set(false);
             this.router.navigate(['/login']);
@@ -55,7 +64,7 @@ export class AuthService {
 
   updateUser(user: User) {
     this._pending.set(true);
-    if (localStorage.getItem('token')) {
+    if (this.cookieService.getCookie('token')) {
       this.http
         .patch<{ user: User }>(`${this.api_url}/user/me`, user)
         .subscribe({
@@ -66,8 +75,8 @@ export class AuthService {
           error: ({ error, code }) => {
             if (code === 'er1001') {
               console.error('Session expired, redirecting to login');
-              localStorage.removeItem('token');
-              localStorage.removeItem('user');
+              this.cookieService.deleteCookie('token');
+              this.cookieService.deleteCookie('user');
               this._user.set(null);
               this._pending.set(false);
               this.router.navigate(['/login']);
@@ -96,7 +105,11 @@ export class AuthService {
       )
       .subscribe({
         next: ({ token, user }) => {
-          localStorage.setItem('token', token);
+          console.log(token);
+
+          this.cookieService.setCookie('token', token, 3);
+          console.log('user', user);
+
           this._user.set(user);
           this._pending.set(false);
 
@@ -134,7 +147,7 @@ export class AuthService {
       )
       .subscribe({
         next: ({ token, user }) => {
-          localStorage.setItem('token', token);
+          this.cookieService.setCookie('token', token, 3);
           this._user.set(user);
           this._pending.set(false);
 
@@ -154,7 +167,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    this.cookieService.deleteCookie('token');
     this._user.set(null);
     this._pending.set(false);
     this.router.navigate(['/']);

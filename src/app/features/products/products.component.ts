@@ -12,10 +12,10 @@ import { Product } from 'src/app/models/product';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
-    selector: 'app-products',
-    templateUrl: './products.component.html',
-    styleUrls: ['./products.component.css'],
-    standalone: false
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.css'],
+  standalone: false,
 })
 export class ProductsComponent implements OnInit {
   private productService = inject(ProductService);
@@ -88,13 +88,10 @@ export class ProductsComponent implements OnInit {
       this.totalPages = this.productService.totalPages();
       this.isPending = this.productService.isPending();
     });
-    effect(
-      () => {
-        const { search, category, sort, order, page } = this.filters();
-        this.productService.getProducts(search, category, sort, order, page);
-      },
-      { allowSignalWrites: true }
-    );
+    effect(() => {
+      const { search, category, sort, order, page } = this.filters();
+      this.productService.getProducts(search, category, sort, order, page);
+    });
   }
 
   ngOnInit(): void {
