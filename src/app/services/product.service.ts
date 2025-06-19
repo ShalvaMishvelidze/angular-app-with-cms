@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Product } from '../models/product';
-import { finalize, firstValueFrom, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -11,7 +10,6 @@ import { Router } from '@angular/router';
 export class ProductService {
   private api_url = environment.api_url;
   private http = inject(HttpClient);
-  private router = inject(Router);
 
   private _pending = signal<boolean>(true);
   private _product = signal<Product | null>(null);
@@ -89,92 +87,5 @@ export class ProductService {
         this._pending.set(false);
       },
     });
-  }
-  async uploadToCloudinary(file: File) {
-    try {
-      const response = await fetch(`${this.api_url}/cloudinary/sign`, {
-        method: 'POST',
-      });
-
-      const data = await response.json();
-      const { signature, timestamp, folder, apiKey, cloudName } = data;
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('api_key', apiKey);
-      formData.append('timestamp', timestamp.toString());
-      formData.append('signature', signature);
-      formData.append('folder', folder);
-
-      const cloudinaryResponse = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
-      const cloudinaryData = await cloudinaryResponse.json();
-      return { url: cloudinaryData.secure_url, id: cloudinaryData.public_id };
-    } catch (error) {
-      console.error('Error uploading to Cloudinary:', error);
-      throw error;
-    }
-  }
-  async deleteFromCloudinary(publicId: string) {
-    const response = await fetch(`${this.api_url}/cloudinary/delete`, {
-      method: 'DELETE',
-      body: JSON.stringify({ publicId }),
-    });
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Error deleting from Cloudinary: ${errorData.message}`);
-    }
-  }
-  saveAsDraft(product: any): void {
-    this._pending.set(true);
-    this.http.put<void>(`${this.api_url}/product/draft`, product).subscribe({
-      next: () => {
-        this._pending.set(false);
-      },
-      error: ({ error, code }) => {
-        console.error('Error saving product as draft:', error, code);
-        this._pending.set(false);
-      },
-    });
-  }
-  getDraft(): Observable<{ draft: Product }> {
-    this._pending.set(true);
-
-    return this.http
-      .get<{ draft: Product }>(`${this.api_url}/product/draft`)
-      .pipe(finalize(() => this._pending.set(false)));
-  }
-  async deleteDraft(): Promise<void> {
-    this._pending.set(true);
-    try {
-      await firstValueFrom(
-        this.http.delete<void>(`${this.api_url}/product/draft`)
-      );
-    } catch (err: any) {
-      console.error('Error deleting draft:', err?.error, err?.code);
-    } finally {
-      this._pending.set(false);
-    }
-  }
-  createNewProduct(product: Product): void {
-    this._pending.set(true);
-    this.http
-      .post<{ product: Product }>(`${this.api_url}/product/me`, product)
-      .subscribe({
-        next: ({ product: newProduct }) => {
-          this._product.set(newProduct);
-          this._pending.set(false);
-          this.router.navigate(['/dashboard/my-products', newProduct.id]);
-        },
-        error: ({ error, code }) => {
-          console.error('Error creating new product:', error, code);
-          this._product.set(null);
-          this._pending.set(false);
-        },
-      });
   }
 }

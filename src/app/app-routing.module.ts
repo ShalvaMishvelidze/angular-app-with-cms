@@ -10,7 +10,6 @@ import { SingleProductComponent } from './features/single-product/single-product
 import { CartComponent } from './features/cart/cart.component';
 import { MyProductsComponent } from './features/my-products/my-products.component';
 import { MyPostsComponent } from './features/my-posts/my-posts.component';
-import { NewProductComponent } from './features/new-product/new-product.component';
 import { NewPostComponent } from './features/new-post/new-post.component';
 import { OrdersComponent } from './features/orders/orders.component';
 import { CheckoutComponent } from './features/checkout/checkout.component';
@@ -85,10 +84,6 @@ const routes: Routes = [
       {
         path: 'my-posts',
         component: MyPostsComponent,
-      },
-      {
-        path: 'new-product',
-        component: NewProductComponent,
       },
       {
         path: 'new-post',
