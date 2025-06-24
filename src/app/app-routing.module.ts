@@ -2,21 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 import { ProductsComponent } from './features/products/products.component';
-import { BlogComponent } from './features/blog/blog.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { PublicComponent } from './layouts/public/public.component';
 import { PrivateComponent } from './layouts/private/private.component';
 import { SingleProductComponent } from './features/single-product/single-product.component';
 import { CartComponent } from './features/cart/cart.component';
 import { MyProductsComponent } from './features/my-products/my-products.component';
-import { MyPostsComponent } from './features/my-posts/my-posts.component';
-import { NewPostComponent } from './features/new-post/new-post.component';
 import { OrdersComponent } from './features/orders/orders.component';
 import { CheckoutComponent } from './features/checkout/checkout.component';
 import { AdminComponent } from './layouts/admin/admin.component';
 import { AdminUsersComponent } from './features/admin-users/admin-users.component';
 import { AdminProductsComponent } from './features/admin-products/admin-products.component';
-import { AdminPostsComponent } from './features/admin-posts/admin-posts.component';
 import { AdminOrdersComponent } from './features/admin-orders/admin-orders.component';
 import { privateChildrenGuard } from './guards/private.guard';
 import { adminChildrenGuard } from './guards/admin.guard';
@@ -42,10 +38,6 @@ const routes: Routes = [
       {
         path: 'products/:id',
         component: SingleProductComponent,
-      },
-      {
-        path: 'blog',
-        component: BlogComponent,
       },
       {
         path: 'cart',
@@ -82,14 +74,6 @@ const routes: Routes = [
         component: MySingleProductComponent,
       },
       {
-        path: 'my-posts',
-        component: MyPostsComponent,
-      },
-      {
-        path: 'new-post',
-        component: NewPostComponent,
-      },
-      {
         path: 'orders',
         component: OrdersComponent,
       },
@@ -112,10 +96,6 @@ const routes: Routes = [
       {
         path: 'products',
         component: AdminProductsComponent,
-      },
-      {
-        path: 'posts',
-        component: AdminPostsComponent,
       },
       {
         path: 'orders',
