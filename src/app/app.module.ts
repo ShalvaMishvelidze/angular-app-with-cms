@@ -23,6 +23,7 @@ import { ProductsModule } from './features/products/products.module';
 import { SingleProductModule } from './features/single-product/single-product.module';
 import { SharedModule } from './components/shared.module';
 import { MyProductsModule } from './features/my-products/my-products.module';
+import { InvalidTokenInterceptor } from './interceptors/invalid-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,11 @@ import { MyProductsModule } from './features/my-products/my-products.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InvalidTokenInterceptor,
+      multi: true,
+    },
     provideHttpClient(withInterceptorsFromDi()),
   ],
 })
