@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { CartItem } from '../models/cart';
 
 @Injectable({
   providedIn: 'root',
@@ -9,85 +10,91 @@ export class CartService {
   private api_url = environment.api_url;
   private http = inject(HttpClient);
 
-  private _cartItems = signal<any[] | null>(null);
+  private _cartItems = signal<CartItem[] | null>(null);
   private _totalItems = signal<number>(0);
   private _totalPrice = signal<number>(0);
+  private _isPending = signal<boolean>(false);
 
   readonly cartItems = computed(() => ({
     cartItems: this._cartItems(),
     totalItems: this._totalItems(),
     totalPrice: this._totalPrice(),
+    isPending: this._isPending(),
   }));
 
   constructor() {}
 
   getCartItems(): void {
-    this.http.get<any[]>(`${this.api_url}/user/cart`).subscribe({
-      next: ({ cart, total, totalPrice }: any) => {
-        this._cartItems.set(cart);
-        this._totalItems.set(total);
-        this._totalPrice.set(totalPrice);
-      },
-      error: (error) => {
-        console.error('Error fetching cart items:', error);
-        this._cartItems.set(null);
-      },
-    });
-  }
-
-  addToCart(item: any): void {
-    this.http.post(`${this.api_url}/user/cart`, item).subscribe({
-      next: (response) => {
-        console.log('Item added to cart:', response);
-      },
-      error: (error) => {
-        console.error('Error adding item to cart:', error);
-      },
-    });
-  }
-
-  increaseItemQuantity(item: any): void {
+    this._isPending.set(true);
     this.http
-      .post(`${this.api_url}/user/cart`, {
-        itemId: item.id,
-        quantity: item.quantity + 1,
-      })
+      .get<{
+        cart: CartItem[];
+        total: number;
+        totalPrice: number;
+      }>(`${this.api_url}/user/cart`)
       .subscribe({
-        next: (response) => {
-          console.log('Item quantity increased:', response);
-          this.getCartItems(); // Refresh cart items
+        next: ({ cart, total, totalPrice }) => {
+          this._cartItems.set(cart);
+          this._totalItems.set(total);
+          this._totalPrice.set(totalPrice);
+          this._isPending.set(false);
         },
         error: (error) => {
-          console.error('Error increasing item quantity:', error);
+          console.error('Error fetching cart items:', error);
+          this._cartItems.set(null);
+          this._isPending.set(false);
         },
       });
   }
-  decreaseItemQuantity(item: any): void {
+
+  addToCart(productId: string, quantity: number): void {
+    this._isPending.set(true);
+    this.http
+      .post(`${this.api_url}/user/cart`, { productId, quantity })
+      .subscribe({
+        next: (response) => {
+          console.log('Item added to cart:', response);
+          this._isPending.set(false);
+        },
+        error: (error) => {
+          console.error('Error adding item to cart:', error);
+          this._isPending.set(false);
+        },
+      });
+  }
+
+  modifyQuantity(itemId: string, quantity: number): void {
+    this._isPending.set(true);
     this.http
       .post(`${this.api_url}/user/cart`, {
-        itemId: item.id,
-        quantity: item.quantity - 1,
+        itemId,
+        quantity,
       })
       .subscribe({
         next: (response) => {
           console.log('Item quantity increased:', response);
+          this._isPending.set(false);
           this.getCartItems(); // Refresh cart items
         },
         error: (error) => {
           console.error('Error increasing item quantity:', error);
+          this._isPending.set(false);
         },
       });
   }
   removeCartItem(itemId: string): void {
+    this._isPending.set(true);
     this.http
       .delete(`${this.api_url}/user/cart`, { body: { itemId } })
       .subscribe({
         next: (response) => {
           console.log('Item removed from cart:', response);
+          this._isPending.set(false);
           this.getCartItems(); // Refresh cart items
         },
         error: (error) => {
           console.error('Error removing item from cart:', error);
+          this._isPending.set(false);
         },
       });
   }
@@ -98,9 +105,11 @@ export class CartService {
         this._cartItems.set(null);
         this._totalItems.set(0);
         this._totalPrice.set(0);
+        this._isPending.set(false);
       },
       error: (error) => {
         console.error('Error clearing cart:', error);
+        this._isPending.set(false);
       },
     });
   }
