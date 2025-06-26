@@ -3,8 +3,13 @@
   *ngIf="initials"
   class="size-[40px] bg-blue-500 flex justify-center items-center rounded-full border-[3px] border-blue-600 hover:bg-blue-600 transition-colors duration-200 cursor-pointer relative z-10"
 >
+  <div
+    class="size-[20px] rounded-full bg-white shadow-md absolute top-[-9px] right-[-9px] flex justify-center items-center text-blue-500 font-bold"
+  >
+    {{ total() }}
+  </div>
   <span class="font-bold text-[18px] text-white">
-    {{ initials }}
+    {{ initials() }}
   </span>
   <app-dropdown *ngIf="_dropdown()"></app-dropdown>
 </div>
