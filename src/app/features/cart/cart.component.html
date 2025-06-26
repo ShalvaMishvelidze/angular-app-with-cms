@@ -1,5 +1,65 @@
-<p>cart works!</p>
-
-<h1 *ngFor="let cartItem of cartItems().cartItems">
-  {{ cartItem.product.name }}
-</h1>
+<app-section>
+  <h1 class="uppercase font-semibold">cart</h1>
+  <div>
+    <div
+      class="relative px-[25px] py-[10px] rounded-[8px] bg-white shadow-lg flex flex-col sm:flex-row sm:justify-between w-full my-[20px]"
+      *ngFor="let cartItem of cartItems().cartItems"
+    >
+      <div class="flex gap-[25px] items-center">
+        <button
+          class="absolute top-[-10px] right-[-10px] p-[5px] bg-gray-100 shadow-lg rounded-full sm:relative sm:top-0 sm:right-0"
+        >
+          <img class="size-[30px]" src="assets/icons/bin.svg" alt="delete" />
+        </button>
+        <img
+          [src]="cartItem.thumbnail.url"
+          alt="Product Image"
+          class="w-full sm:w-[170px] h-[200px] sm:h-[120px] object-cover rounded-[8px] sm:shadow-md"
+        />
+      </div>
+      <div class="flex flex-col sm:items-end gap-[5px] py-[10px]">
+        <h2 class="text-[20px] leading-[24px]">
+          {{ cartItem.name }}
+        </h2>
+        <h3 class="text-[20px] leading-[28px] font-semibold">
+          {{ cartItem.price | currency : "USD" }}
+        </h3>
+        <div class="flex items-center gap-[20px] mt-[10px]">
+          <button>
+            <img
+              src="assets/icons/minus.svg"
+              alt="minus icon"
+              class="size-[30px]"
+            />
+          </button>
+          <span class="text-[28px] leading-[32px]">
+            {{ cartItem.quantity }}
+          </span>
+          <button>
+            <img
+              src="assets/icons/plus.svg"
+              alt="plus icon"
+              class="size-[30px]"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex flex-col sm:flex-row justify-center gap-[20px] sm:justify-between items-center"
+  >
+    <h2 class="text-[20px] leading-[24px] font-semibold">
+      Total Items: {{ cartItems().totalItems }}
+    </h2>
+    <h3 class="text-[20px] leading-[28px] font-semibold">
+      Total Price: {{ cartItems().totalPrice | currency : "USD" }}
+    </h3>
+    <button
+      class="w-full sm:w-auto px-[20px] py-[10px] bg-blue-500 text-white rounded-[8px] shadow-lg"
+      (click)="clearCart()"
+    >
+      Clear Cart
+    </button>
+  </div>
+</app-section>

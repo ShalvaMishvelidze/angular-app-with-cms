@@ -54,7 +54,7 @@ export class CartService {
       .subscribe({
         next: (response) => {
           console.log('Item added to cart:', response);
-          this._isPending.set(false);
+          this.getCartItems();
         },
         error: (error) => {
           console.error('Error adding item to cart:', error);
@@ -73,8 +73,7 @@ export class CartService {
       .subscribe({
         next: (response) => {
           console.log('Item quantity increased:', response);
-          this._isPending.set(false);
-          this.getCartItems(); // Refresh cart items
+          this.getCartItems();
         },
         error: (error) => {
           console.error('Error increasing item quantity:', error);
@@ -89,8 +88,7 @@ export class CartService {
       .subscribe({
         next: (response) => {
           console.log('Item removed from cart:', response);
-          this._isPending.set(false);
-          this.getCartItems(); // Refresh cart items
+          this.getCartItems();
         },
         error: (error) => {
           console.error('Error removing item from cart:', error);

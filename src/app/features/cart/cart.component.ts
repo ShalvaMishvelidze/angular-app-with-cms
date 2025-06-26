@@ -12,6 +12,8 @@ export class CartComponent {
 
   readonly cartItems = computed(() => this.cartService.cartItems());
 
+  clearCart = () => this.cartService.clearCart();
+
   constructor() {
     effect(() => {
       console.log(this.cartItems());
