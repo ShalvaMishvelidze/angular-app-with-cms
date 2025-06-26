@@ -25,7 +25,7 @@
           {{ cartItem.price | currency : "USD" }}
         </h3>
         <div class="flex items-center gap-[20px] mt-[10px]">
-          <button>
+          <button (click)="modifyQuantity(cartItem.id, cartItem.quantity - 1)">
             <img
               src="assets/icons/minus.svg"
               alt="minus icon"
@@ -35,7 +35,7 @@
           <span class="text-[28px] leading-[32px]">
             {{ cartItem.quantity }}
           </span>
-          <button>
+          <button (click)="modifyQuantity(cartItem.id, cartItem.quantity + 1)">
             <img
               src="assets/icons/plus.svg"
               alt="plus icon"

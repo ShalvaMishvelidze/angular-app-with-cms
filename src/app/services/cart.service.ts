@@ -63,10 +63,10 @@ export class CartService {
       });
   }
 
-  modifyQuantity(itemId: string, quantity: number): void {
+  modifyQuantity = (itemId: string, quantity: number): void => {
     this._isPending.set(true);
     this.http
-      .post(`${this.api_url}/user/cart`, {
+      .patch(`${this.api_url}/user/cart`, {
         itemId,
         quantity,
       })
@@ -80,7 +80,7 @@ export class CartService {
           this._isPending.set(false);
         },
       });
-  }
+  };
   removeCartItem(itemId: string): void {
     this._isPending.set(true);
     this.http

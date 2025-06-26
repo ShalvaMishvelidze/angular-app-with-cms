@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 
 @Component({
@@ -10,9 +10,10 @@ import { CartService } from 'src/app/services/cart.service';
 export class CartComponent {
   private cartService = inject(CartService);
 
-  readonly cartItems = computed(() => this.cartService.cartItems());
+  readonly cartItems = this.cartService.cartItems;
 
   clearCart = () => this.cartService.clearCart();
+  modifyQuantity = this.cartService.modifyQuantity;
 
   constructor() {
     effect(() => {
