@@ -24,6 +24,7 @@ import { SingleProductModule } from './features/single-product/single-product.mo
 import { SharedModule } from './components/shared.module';
 import { MyProductsModule } from './features/my-products/my-products.module';
 import { InvalidTokenInterceptor } from './interceptors/invalid-token.interceptor';
+import { CartModule } from './features/cart/cart.module';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { InvalidTokenInterceptor } from './interceptors/invalid-token.intercepto
     ProfileModule,
     SharedModule,
     MyProductsModule,
+    CartModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
