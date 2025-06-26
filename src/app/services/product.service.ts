@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Product } from '../models/product';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
