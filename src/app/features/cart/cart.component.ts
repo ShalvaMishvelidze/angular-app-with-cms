@@ -13,6 +13,7 @@ export class CartComponent {
   readonly cartItems = this.cartService.cartItems;
 
   clearCart = this.cartService.clearCart;
+  removeFromCart = this.cartService.removeCartItem;
   modifyQuantity = this.cartService.modifyQuantity;
   checkout = this.cartService.checkout;
 

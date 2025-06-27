@@ -83,7 +83,7 @@ export class CartService {
         },
       });
   };
-  removeCartItem(itemId: string): void {
+  removeCartItem = (itemId: string): void => {
     this._isPending.set(true);
     this.http
       .delete(`${this.api_url}/user/cart`, { body: { itemId } })
@@ -97,7 +97,7 @@ export class CartService {
           this._isPending.set(false);
         },
       });
-  }
+  };
   clearCart(): void {
     this._isPending.set(true);
     this.http.delete(`${this.api_url}/user/cart/clear`).subscribe({
