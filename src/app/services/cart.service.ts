@@ -117,7 +117,7 @@ export class CartService {
   checkout = (): void => {
     this._isPending.set(true);
     this.http
-      .post<{ id: string }>(`${this.api_url}/user/checkout`, {
+      .post<{ id: string }>(`${this.api_url}/stripe/checkout`, {
         items: this.cartItems().cartItems,
       })
       .pipe(
