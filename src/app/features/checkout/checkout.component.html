@@ -1,1 +1,2 @@
-<p>checkout works!</p>
+<p *ngIf="cartItems().isPending">loading...</p>
+<p *ngIf="!cartItems().isPending">checkout works!</p>

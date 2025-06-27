@@ -12,8 +12,9 @@ export class CartComponent {
 
   readonly cartItems = this.cartService.cartItems;
 
-  clearCart = () => this.cartService.clearCart();
+  clearCart = this.cartService.clearCart;
   modifyQuantity = this.cartService.modifyQuantity;
+  checkout = this.cartService.checkout;
 
   constructor() {
     effect(() => {

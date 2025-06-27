@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CartItem } from '../models/cart';
+import { loadStripe } from '@stripe/stripe-js';
+import { from, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -97,6 +99,7 @@ export class CartService {
       });
   }
   clearCart(): void {
+    this._isPending.set(true);
     this.http.delete(`${this.api_url}/user/cart/clear`).subscribe({
       next: (response) => {
         console.log('Cart cleared:', response);
@@ -111,4 +114,25 @@ export class CartService {
       },
     });
   }
+  checkout = (): void => {
+    this._isPending.set(true);
+    this.http
+      .post<{ id: string }>(`${this.api_url}/user/checkout`, {
+        items: this.cartItems().cartItems,
+      })
+      .pipe(
+        switchMap((session) =>
+          from(loadStripe(environment.stripe_publishable_key)).pipe(
+            switchMap((stripe) =>
+              from(
+                stripe!.redirectToCheckout({
+                  sessionId: session.id,
+                })
+              )
+            )
+          )
+        )
+      )
+      .subscribe();
+  };
 }
