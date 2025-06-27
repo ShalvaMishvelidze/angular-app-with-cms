@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { CartItem } from '../models/cart';
 import { loadStripe } from '@stripe/stripe-js';
 import { from, switchMap } from 'rxjs';
+import { Order } from '../models/order';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +17,17 @@ export class CartService {
   private _totalItems = signal<number>(0);
   private _totalPrice = signal<number>(0);
   private _isPending = signal<boolean>(false);
+  private _orders = signal<Order[]>([]);
 
   readonly cartItems = computed(() => ({
     cartItems: this._cartItems(),
     totalItems: this._totalItems(),
     totalPrice: this._totalPrice(),
+    isPending: this._isPending(),
+  }));
+
+  readonly orders = computed(() => ({
+    orders: this._orders(),
     isPending: this._isPending(),
   }));
 
@@ -135,4 +142,19 @@ export class CartService {
       )
       .subscribe();
   };
+  getOrders(): void {
+    this._isPending.set(true);
+    this.http
+      .get<{ orders: Order[] }>(`${this.api_url}/user/order/get-all`)
+      .subscribe({
+        next: (response) => {
+          this._orders.set(response.orders);
+          this._isPending.set(false);
+        },
+        error: (error) => {
+          console.error('Error fetching orders:', error);
+          this._isPending.set(false);
+        },
+      });
+  }
 }

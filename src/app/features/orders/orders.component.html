@@ -1,1 +1,30 @@
-<p>orders works!</p>
+<app-section>
+  <p *ngIf="orders().isPending">loading...</p>
+  <div class="flex flex-col">
+    <div
+      class="flex justify-evenly items-center h-[40px] w-full bg-gray-700 text-white border-b border-white px-[20px]"
+    >
+      <h2 class="w-full text-center text-[16px] font-semibold">Order</h2>
+      <h2 class="w-full text-center text-[16px] font-semibold">Status</h2>
+      <h2 class="w-full text-center text-[16px] font-semibold">Total</h2>
+      <h2 class="w-full text-center text-[16px] font-semibold">Created At</h2>
+    </div>
+    <div
+      class="flex justify-evenly items-center h-[40px] w-full bg-gray-700 text-white border-b border-white px-[20px]"
+      *ngFor="let order of orders().orders"
+    >
+      <p class="text-[14px] w-full overflow-hidden text-ellipsis text-center">
+        {{ order.id }}
+      </p>
+      <p class="text-[16px] w-full overflow-hidden text-ellipsis text-center">
+        {{ order.status }}
+      </p>
+      <p class="text-[16px] w-full overflow-hidden text-ellipsis text-center">
+        {{ order.total | currency : "USD" }}
+      </p>
+      <p class="text-[16px] w-full overflow-hidden text-ellipsis text-center">
+        {{ order.createdAt | date : "short" }}
+      </p>
+    </div>
+  </div>
+</app-section>
