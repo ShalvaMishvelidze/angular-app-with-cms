@@ -27,6 +27,7 @@ import { InvalidTokenInterceptor } from './interceptors/invalid-token.intercepto
 import { CartModule } from './features/cart/cart.module';
 import { CheckoutModule } from './features/checkout/checkout.module';
 import { OrdersModule } from './features/orders/orders.module';
+import { SingleOrderModule } from './features/single-order/single-order.module';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { OrdersModule } from './features/orders/orders.module';
     CartModule,
     CheckoutModule,
     OrdersModule,
+    SingleOrderModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

@@ -18,6 +18,7 @@ export class CartService {
   private _totalPrice = signal<number>(0);
   private _isPending = signal<boolean>(false);
   private _orders = signal<Order[]>([]);
+  private _orderDetails = signal<any>(null);
 
   readonly cartItems = computed(() => ({
     cartItems: this._cartItems(),
@@ -28,6 +29,11 @@ export class CartService {
 
   readonly orders = computed(() => ({
     orders: this._orders(),
+    isPending: this._isPending(),
+  }));
+
+  readonly orderDetails = computed(() => ({
+    orderDetails: this._orderDetails(),
     isPending: this._isPending(),
   }));
 
@@ -145,7 +151,7 @@ export class CartService {
   getOrders(): void {
     this._isPending.set(true);
     this.http
-      .get<{ orders: Order[] }>(`${this.api_url}/user/order/get-all`)
+      .get<{ orders: any[] }>(`${this.api_url}/user/order/get-all`)
       .subscribe({
         next: (response) => {
           this._orders.set(response.orders);
@@ -153,6 +159,23 @@ export class CartService {
         },
         error: (error) => {
           console.error('Error fetching orders:', error);
+          this._isPending.set(false);
+        },
+      });
+  }
+  getOrderDetails(orderId: string): void {
+    this._isPending.set(true);
+    this.http
+      .get<{ orderDetails: any }>(
+        `${this.api_url}/user/order?orderId=${orderId}`
+      )
+      .subscribe({
+        next: ({ orderDetails }) => {
+          this._orderDetails.set(orderDetails);
+          this._isPending.set(false);
+        },
+        error: (error) => {
+          console.error('Error fetching order details:', error);
           this._isPending.set(false);
         },
       });

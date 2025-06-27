@@ -21,6 +21,7 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { smartGuard } from './guards/smart.guard';
 import { publicGuard } from './guards/public.guard';
 import { MySingleProductComponent } from './features/my-single-product/my-single-product.component';
+import { SingleOrderComponent } from './features/single-order/single-order.component';
 
 const routes: Routes = [
   {
@@ -76,6 +77,10 @@ const routes: Routes = [
       {
         path: 'orders',
         component: OrdersComponent,
+      },
+      {
+        path: 'orders/:id',
+        component: SingleOrderComponent,
       },
     ],
   },

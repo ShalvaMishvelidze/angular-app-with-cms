@@ -9,7 +9,8 @@
       <h2 class="w-full text-center text-[16px] font-semibold">Total</h2>
       <h2 class="w-full text-center text-[16px] font-semibold">Created At</h2>
     </div>
-    <div
+    <a
+      [routerLink]="['/dashboard/orders', order.id]"
       class="flex justify-evenly items-center h-[40px] w-full {{
         order.status === 'paid'
           ? 'bg-emerald-400'
@@ -33,6 +34,6 @@
       <p class="text-[16px] w-full overflow-hidden text-ellipsis text-center">
         {{ order.createdAt | date : "short" }}
       </p>
-    </div>
+    </a>
   </div>
 </app-section>
