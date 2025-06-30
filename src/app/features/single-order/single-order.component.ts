@@ -15,6 +15,7 @@ export class SingleOrderComponent {
   orderId: string | null = null;
 
   orderDetails = this.cartService.orderDetails;
+  askForARefund = this.cartService.askForARefund;
 
   constructor() {
     this.orderId = this.route.snapshot.paramMap.get('id');

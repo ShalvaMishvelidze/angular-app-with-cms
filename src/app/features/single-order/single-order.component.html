@@ -1,5 +1,5 @@
 <app-section>
-  <section class="flex flex-col gap-[20px]">
+  <section *ngIf="orderId" class="flex flex-col gap-[20px]">
     <article
       class="flex justify-between w-full shadow-md p-[10px]"
       *ngFor="let order of orderDetails().orderDetails"
@@ -17,5 +17,12 @@
         <p>Total: {{ order.amount | currency : "USD" }}</p>
       </div>
     </article>
+    <button
+      *ngIf="orderDetails().orderStatus !== 'refunded'"
+      (click)="askForARefund(orderId)"
+      class="w-[200px] h-[40px] mx-auto bg-red-400 hover:bg-red-500 text-white capitalize font-semibold rounded-[8px]"
+    >
+      ask for a refund
+    </button>
   </section>
 </app-section>

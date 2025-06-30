@@ -5,6 +5,7 @@ import { CartItem } from '../models/cart';
 import { loadStripe } from '@stripe/stripe-js';
 import { from, switchMap } from 'rxjs';
 import { Order } from '../models/order';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +13,15 @@ import { Order } from '../models/order';
 export class CartService {
   private api_url = environment.api_url;
   private http = inject(HttpClient);
+  private router = inject(Router);
 
   private _cartItems = signal<CartItem[] | null>(null);
   private _totalItems = signal<number>(0);
   private _totalPrice = signal<number>(0);
   private _isPending = signal<boolean>(false);
   private _orders = signal<Order[]>([]);
-  private _orderDetails = signal<any>(null);
+  private _orderItems = signal<any>(null);
+  private _orderStatus = signal<any>(null);
 
   readonly cartItems = computed(() => ({
     cartItems: this._cartItems(),
@@ -33,7 +36,8 @@ export class CartService {
   }));
 
   readonly orderDetails = computed(() => ({
-    orderDetails: this._orderDetails(),
+    orderDetails: this._orderItems(),
+    orderStatus: this._orderStatus(),
     isPending: this._isPending(),
   }));
 
@@ -169,8 +173,9 @@ export class CartService {
       .get<{ orderItems: any }>(`${this.api_url}/user/order?orderId=${orderId}`)
       .subscribe({
         next: ({ orderItems: orderDetails }) => {
-          console.log('Order details fetched:', orderDetails.orderItems);
-          this._orderDetails.set(
+          console.log('Order details fetched:', orderDetails);
+          this._orderStatus.set(orderDetails.status);
+          this._orderItems.set(
             orderDetails.orderItems.map((item: any) => {
               return {
                 id: item.id,
@@ -191,4 +196,18 @@ export class CartService {
         },
       });
   }
+  askForARefund = (orderId: string): void => {
+    this._isPending.set(true);
+    this.http.post(`${this.api_url}/stripe/refund`, { orderId }).subscribe({
+      next: (response) => {
+        console.log('Refund request sent:', response);
+        this.router.navigate(['/dashboard/orders']);
+        this._isPending.set(false);
+      },
+      error: (error) => {
+        console.error('Error requesting refund:', error);
+        this._isPending.set(false);
+      },
+    });
+  };
 }
