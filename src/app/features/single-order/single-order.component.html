@@ -1,1 +1,21 @@
-<p>single-order works!</p>
+<app-section>
+  <section class="flex flex-col gap-[20px]">
+    <article
+      class="flex justify-between w-full shadow-md p-[10px]"
+      *ngFor="let order of orderDetails().orderDetails"
+    >
+      <img
+        [src]="order.thumbnail"
+        alt="thumbnail"
+        class="w-[100px] h-[80px] object-cover"
+      />
+      <div class="flex flex-col max-w-[300px] w-full">
+        <p>
+          {{ order.name }}
+        </p>
+        <p>{{ order.price | currency : "USD" }} x {{ order.quantity }}</p>
+        <p>Total: {{ order.amount | currency : "USD" }}</p>
+      </div>
+    </article>
+  </section>
+</app-section>

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-single-order',
@@ -7,5 +9,18 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class SingleOrderComponent {
-  constructor() {}
+  private cartService = inject(CartService);
+  private route = inject(ActivatedRoute);
+
+  orderId: string | null = null;
+
+  orderDetails = this.cartService.orderDetails;
+
+  constructor() {
+    this.orderId = this.route.snapshot.paramMap.get('id');
+
+    if (this.orderId) {
+      this.cartService.getOrderDetails(this.orderId);
+    }
+  }
 }

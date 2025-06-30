@@ -166,12 +166,23 @@ export class CartService {
   getOrderDetails(orderId: string): void {
     this._isPending.set(true);
     this.http
-      .get<{ orderDetails: any }>(
-        `${this.api_url}/user/order?orderId=${orderId}`
-      )
+      .get<{ orderItems: any }>(`${this.api_url}/user/order?orderId=${orderId}`)
       .subscribe({
-        next: ({ orderDetails }) => {
-          this._orderDetails.set(orderDetails);
+        next: ({ orderItems: orderDetails }) => {
+          console.log('Order details fetched:', orderDetails.orderItems);
+          this._orderDetails.set(
+            orderDetails.orderItems.map((item: any) => {
+              return {
+                id: item.id,
+                name: item.product.name,
+                productId: item.product.id,
+                price: item.price,
+                quantity: item.quantity,
+                thumbnail: JSON.parse(item.product.thumbnail).url,
+                amount: item.amount,
+              };
+            })
+          );
           this._isPending.set(false);
         },
         error: (error) => {
